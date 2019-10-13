@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+<GridPane alignment="CENTER" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="test.TestPaneController">
+	<columnConstraints>
+		<ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" />
+		<ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="1093.0" />
+	</columnConstraints>
+	<rowConstraints>
+		<RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+		<RowConstraints maxHeight="1.7976931348623157E308" minHeight="1.0" prefHeight="696.0" vgrow="SOMETIMES" />
+		<RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" vgrow="SOMETIMES" />
+	</rowConstraints>
+	<children>
+		<Label alignment="CENTER" text="图例" GridPane.halignment="CENTER" />
+		<ScrollPane fx:id="operateSp" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+			<content>
+				<AnchorPane fx:id="operatePane" minHeight="0.0" minWidth="0.0" prefHeight="948.0" prefWidth="1435.0" />
+			</content>
+		</ScrollPane>
+		<ScrollPane fx:id="stationSp" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+			<content>
+				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="948.0" prefWidth="200.0" />
+			</content>
+		</ScrollPane>
+		<ScrollPane fx:id="timeSp" prefHeight="200.0" prefWidth="200.0" vbarPolicy="NEVER" GridPane.columnIndex="1">
+			<content>
+				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="1435.0" />
+			</content>
+		</ScrollPane>
+		<ScrollPane fx:id="sp" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="21.0" prefWidth="1093.0" vbarPolicy="NEVER" GridPane.columnIndex="1" GridPane.rowIndex="2">
+			<content>
+				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="1435.0" />
+			</content>
+		</ScrollPane>
+	</children>
+	<BorderPane.margin>
+		<Insets />
+	</BorderPane.margin>
+</GridPane>
