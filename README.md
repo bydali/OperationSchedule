@@ -4,7 +4,7 @@
 
 **开发语言：** java  
 
-**软件：** eclipse  
+**软件：** eclipse（需要安装javafx插件，方便mvc模式各层分离）
 
 **jdk版本：** 1.8    
 
