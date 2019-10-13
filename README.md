@@ -6,13 +6,11 @@
 
 **软件：** eclipse  
 
-**jdk版本：** 1.8  
-
-**框架：** spring boot 或者 spring cloud（基于spring boot的分布式框架）  
+**jdk版本：** 1.8    
 
 **消息队列组件：** rabbit mq  
 
-**前端组件：** swing（Java原生）  
+**前端组件：** javafx  
 
 **测试系统：** 中标麒麟
 
