@@ -93,9 +93,13 @@
 5. 交班存图
 
 ---  
+使用的mvc的界面设计模，model是后台数据结构，后缀为Controller的是控制器，文件夹中以Controller后缀为区别的两个文件分别是视图和控制器，后续开发的逻辑重点再Controller中。  
 
-使用的mvc的界面设计模，model是后台数据结构，后缀为Controller的是控制器，文件夹中以Controller后缀为区别的两个文件分别是视图和控制器，后续开发的逻辑重点再Controller中。
-src下中Main是主结构，见结构.png，station是重点结构，操作大表的滑动结构见大表.png，test是后续测试包，
+src下中Main是主结构，见结构.png  
+
+station是重点结构，操作大表的滑动结构见大表.png  
+
+test是后续测试包，
 
 **后续阶段需要解决的问题：**
 1. 数据结构（重）
