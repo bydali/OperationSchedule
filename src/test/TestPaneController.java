@@ -10,8 +10,10 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.DragEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -30,9 +32,18 @@ public class TestPaneController implements Initializable {
 	@FXML
 	private AnchorPane operatePane;
 
+	private double oldX;
+	private double oldY;
+	private double oldHValue;
+	private double oldVValue;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
+		syncSliding();
+	}
+
+	private void syncSliding() {
 		sp.hvalueProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> arg0, Number o, Number n) {
@@ -55,24 +66,33 @@ public class TestPaneController implements Initializable {
 				operateSp.setVvalue(n.doubleValue());
 			}
 		});
-		operatePane.setOnMouseDragged(new EventHandler<MouseEvent>() {
-			private double lastX = 0;
-			private double lastY = 0;
+		operateSp.addEventFilter(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
 				if (event.isMiddleButtonDown()) {
-//					if (event.getX() != lastX && event.getY() != lastY) {
-//						event.
-//					}
-					double hValue = event.getX() / operatePane.getWidth();
-					double vValue = event.getY() / operatePane.getHeight();
-					sp.setHvalue(hValue);
-					operateSp.setVvalue(vValue);
+					double relativeX = event.getX() - oldX;
+					double relativeY = event.getY() - oldY;
 
+					double relativeHValue = relativeX / (operatePane.getWidth() - operateSp.getWidth());
+					double relativeVValue = relativeY / (operatePane.getHeight() - operateSp.getHeight());
+					sp.setHvalue(oldHValue + relativeHValue);
+					operateSp.setVvalue(oldVValue + relativeVValue);
 				}
 			}
 		});
+		operateSp.setOnMousePressed((new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				// TODO Auto-generated method stub
+				if (event.isMiddleButtonDown()) {
+					oldX = event.getX();
+					oldY = event.getY();
+					oldHValue = sp.getHvalue();
+					oldVValue = operateSp.getVvalue();
+					System.out.println("中键按下");
+				}
+			}
+		}));
 	}
-
 }
