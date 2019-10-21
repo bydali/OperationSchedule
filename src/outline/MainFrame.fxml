@@ -27,7 +27,8 @@
 				</Menu>
 				<Menu mnemonicParsing="false" text="参数设置">
 					<items>
-						<MenuItem mnemonicParsing="false" text="Action 1" />
+						<MenuItem mnemonicParsing="false" text="区间运行时间" />
+                  <MenuItem mnemonicParsing="false" text="间隔参数" />
 					</items>
 				</Menu>
 				<Menu mnemonicParsing="false" text="绘制运行符号">
@@ -69,22 +70,62 @@
 				</Menu>
 				<Menu mnemonicParsing="false" text="列车管理">
 					<items>
-						<MenuItem mnemonicParsing="false" text="Action 1" />
+						<MenuItem mnemonicParsing="false" text="当班记事" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" text="乘务管理窗口" />
+                  <MenuItem mnemonicParsing="false" text="车站现在车" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" text="乘务机务叫班" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" text="列车甩挂管理" />
+                  <MenuItem mnemonicParsing="false" text="计划台下达甩挂信息" />
+                  <MenuItem mnemonicParsing="false" text="交接车数统计" />
+                  <MenuItem mnemonicParsing="false" text="调度命令" />
 					</items>
 				</Menu>
 				<Menu mnemonicParsing="false" text="显示选项">
 					<items>
-						<MenuItem mnemonicParsing="false" text="Delete" />
+                  <CheckMenuItem mnemonicParsing="false" text="显示报点窗口" />
+                  <MenuItem mnemonicParsing="false" text="列车确报查询" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <CheckMenuItem mnemonicParsing="false" text="显示正晚点" />
+                  <CheckMenuItem mnemonicParsing="false" text="显示基本图" />
+                  <CheckMenuItem mnemonicParsing="false" text="显示区间分析" />
+                  <CheckMenuItem mnemonicParsing="false" text="显示运行时分分析" />
+                  <CheckMenuItem mnemonicParsing="false" text="始终显示换方向车次" />
+                  <CheckMenuItem mnemonicParsing="false" text="显示车底交路" />
+                  <CheckMenuItem mnemonicParsing="false" text="显示叫班信息" />
+                  <CheckMenuItem mnemonicParsing="false" text="显示调度命令生成信息" />
+                  <CheckMenuItem mnemonicParsing="false" text="显示运缓信息" />
+                  <CheckMenuItem mnemonicParsing="false" text="显示计划错误报警信息" />
+                  <CheckMenuItem mnemonicParsing="false" text="显示选中列车节点Tip" />
+                  <CheckMenuItem mnemonicParsing="false" text="显示营业标志" />
+                  <CheckMenuItem mnemonicParsing="false" text="显示细线条" />
+                  <CheckMenuItem mnemonicParsing="false" text="显示进路开放标志" />
+                  <CheckMenuItem mnemonicParsing="false" text="报点后自动移动后续车站运行点" />
+                  <CheckMenuItem mnemonicParsing="false" text="叫班时按到达点叫班" />
 					</items>
 				</Menu>
 				<Menu mnemonicParsing="false" text="培训方案管理">
 					<items>
-						<MenuItem mnemonicParsing="false" text="Action 1" />
+						<MenuItem mnemonicParsing="false" text="初始培训交班现场" />
+                  <MenuItem mnemonicParsing="false" text="校验台初始化方案" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" text="列调操作完成" />
+                  <MenuItem mnemonicParsing="false" text="开始录制" />
+                  <MenuItem mnemonicParsing="false" text="结束录制" />
+                  <MenuItem mnemonicParsing="false" text="时钟同步" />
+                  <MenuItem mnemonicParsing="false" text="查看试题题目" />
+                  <MenuItem mnemonicParsing="false" text="查看记录档案" />
 					</items>
 				</Menu>
 				<Menu mnemonicParsing="false" text="帮助">
 					<items>
-						<MenuItem mnemonicParsing="false" text="About" />
+						<MenuItem mnemonicParsing="false" text="目录和索引" />
+                  <MenuItem mnemonicParsing="false" text="每日提示" />
+                  <MenuItem mnemonicParsing="false" text="视频帮助" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" text="关于本系统" />
 					</items>
 				</Menu>
 			</menus>

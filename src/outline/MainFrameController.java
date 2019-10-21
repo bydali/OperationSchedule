@@ -27,7 +27,6 @@ public class MainFrameController implements Initializable {
 
 		javafx.scene.control.Label l = new javafx.scene.control.Label();
 		l.setText("jhhhafsdsaf");
-		
 
 	}
 }

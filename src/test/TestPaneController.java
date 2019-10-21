@@ -11,6 +11,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
@@ -54,14 +56,20 @@ public class TestPaneController implements Initializable {
 			}
 		});
 		operatePane.setOnMouseDragged(new EventHandler<MouseEvent>() {
+			private double lastX = 0;
+			private double lastY = 0;
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
 				if (event.isMiddleButtonDown()) {
+//					if (event.getX() != lastX && event.getY() != lastY) {
+//						event.
+//					}
 					double hValue = event.getX() / operatePane.getWidth();
 					double vValue = event.getY() / operatePane.getHeight();
 					sp.setHvalue(hValue);
 					operateSp.setVvalue(vValue);
+
 				}
 			}
 		});
