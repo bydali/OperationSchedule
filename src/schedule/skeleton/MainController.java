@@ -1,4 +1,4 @@
-package outline;
+package schedule.skeleton;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -10,7 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.*;
 
-public class MainFrameController implements Initializable {
+public class MainController implements Initializable {
 	@FXML
 	private AnchorPane operateTab;
 

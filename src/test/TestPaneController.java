@@ -90,7 +90,6 @@ public class TestPaneController implements Initializable {
 					oldY = event.getY();
 					oldHValue = sp.getHvalue();
 					oldVValue = operateSp.getVvalue();
-					System.out.println("中键按下");
 				}
 			}
 		}));

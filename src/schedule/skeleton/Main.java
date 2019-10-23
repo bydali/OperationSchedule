@@ -1,4 +1,4 @@
-package outline;
+package schedule.skeleton;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -11,7 +11,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			BorderPane root = (BorderPane) FXMLLoader.load(getClass().getResource("MainFrame.fxml"));
+			BorderPane root = (BorderPane) FXMLLoader.load(getClass().getResource("Main.fxml"));
 			Scene scene = new Scene(root, 1680, 1050);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
