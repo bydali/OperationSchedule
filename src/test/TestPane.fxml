@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.canvas.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
@@ -19,18 +20,18 @@
 	<children>
 		<Label alignment="CENTER" text="图例" GridPane.halignment="CENTER" />
 		<ScrollPane fx:id="operateSp" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-			<content>
-				<AnchorPane fx:id="operatePane" minHeight="0.0" minWidth="0.0" prefHeight="948.0" prefWidth="1435.0" />
-			</content>
+         <content>
+            <AnchorPane fx:id="operateAp" prefHeight="948.0" prefWidth="1435.0" />
+         </content>
 		</ScrollPane>
 		<ScrollPane fx:id="stationSp" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
 			<content>
-				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="948.0" prefWidth="200.0" />
+				<AnchorPane fx:id="headsAp" minHeight="0.0" minWidth="0.0" prefHeight="948.0" prefWidth="200.0" />
 			</content>
 		</ScrollPane>
-		<ScrollPane fx:id="timeSp" prefHeight="200.0" prefWidth="200.0" vbarPolicy="NEVER" GridPane.columnIndex="1">
+		<ScrollPane fx:id="timeSp" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" vbarPolicy="NEVER" GridPane.columnIndex="1">
 			<content>
-				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="1435.0" />
+				<AnchorPane fx:id="timeAp" minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="1435.0" />
 			</content>
 		</ScrollPane>
 		<ScrollPane fx:id="sp" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="21.0" prefWidth="1093.0" vbarPolicy="NEVER" GridPane.columnIndex="1" GridPane.rowIndex="2">
