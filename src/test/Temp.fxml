@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
+<?import javafx.scene.paint.*?>
 <?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.control.*?>
-<?import java.lang.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import java.lang.*?>
+<?import javafx.scene.canvas.*?>
 
-
-<AnchorPane prefHeight="304.0" prefWidth="346.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
-   <children>
-      <Line endX="100.0" layoutX="159.0" layoutY="114.0" startX="-100.0" strokeWidth="5.0" />
-   </children>
+<AnchorPane fx:controller="test.TempController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+	<children>
+		<Group fx:id="g1">
+			<children>
+				<Line endX="300.0" endY="100.0" startX="100.0" startY="100.0" strokeWidth="10.0" />
+				<Circle centerX="100.0" centerY="100.0" fill="TRANSPARENT" radius="100.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="10.0" />
+			</children>
+		</Group>
+		<Group fx:id="g2">
+			<children>
+				<Circle centerX="200.0" centerY="200.0" fill="TRANSPARENT" radius="100.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="10.0" />
+				<Line endX="400.0" endY="200.0" startX="200.0" startY="200.0" strokeWidth="10.0" />
+			</children>
+		</Group>
+	</children>
 </AnchorPane>

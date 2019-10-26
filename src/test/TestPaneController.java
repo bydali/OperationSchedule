@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
+import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -23,6 +24,7 @@ import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
@@ -44,16 +46,22 @@ public class TestPaneController implements Initializable {
 	@FXML
 	private ScrollPane sp;
 	@FXML
-	private AnchorPane operateAp;
+	private AnchorPane ap;
+	@FXML
+	private VBox operateVb;
 	@FXML
 	private AnchorPane timeAp;
 	@FXML
-	private AnchorPane headsAp;
+	private VBox headsVb;
 
 	private double oldX;
 	private double oldY;
 	private double oldHValue;
 	private double oldVValue;
+
+	private final int leftOffset = 20;
+	private final int hourInterval = 240;
+	private final int decadeInterval = hourInterval / 6;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -66,12 +74,10 @@ public class TestPaneController implements Initializable {
 	}
 
 	private void setPaneSize() {
-
+		timeAp.setPrefWidth(hourInterval * 19);
+		operateVb.setPrefWidth(hourInterval * 19);
+		ap.setPrefWidth(hourInterval * 19);
 	}
-
-	private final int leftOffset = 20;
-	private final int hourInterval = 240;
-	private final int decadeInterval = hourInterval / 6;
 
 	private void drawTime() {
 		int topOffsetHour = 18;
@@ -108,7 +114,7 @@ public class TestPaneController implements Initializable {
 
 		double startX = leftOffset;
 		double startY = topOffsetDecade + lenOfDecadeLine / 2;
-		double endX = startX + hourInterval * (24 - 6);
+		double endX = startX + hourInterval * (24 - 6 + 1);
 		Line h = new Line(startX, startY, endX, startY);
 		h.setStroke(Color.RED);
 		h.setStrokeWidth(0.5);
@@ -116,7 +122,7 @@ public class TestPaneController implements Initializable {
 	}
 
 	private void drawHeads() {
-
+		
 	}
 
 	private void drawOperateMap() {
@@ -154,8 +160,8 @@ public class TestPaneController implements Initializable {
 					double relativeX = event.getX() - oldX;
 					double relativeY = event.getY() - oldY;
 
-					double relativeHValue = relativeX / (operateAp.getWidth() - operateSp.getWidth());
-					double relativeVValue = relativeY / (operateAp.getHeight() - operateSp.getHeight());
+					double relativeHValue = relativeX / (operateVb.getWidth() - operateSp.getWidth());
+					double relativeVValue = relativeY / (operateVb.getHeight() - operateSp.getHeight());
 					sp.setHvalue(oldHValue + relativeHValue);
 					operateSp.setVvalue(oldVValue + relativeVValue);
 				}
