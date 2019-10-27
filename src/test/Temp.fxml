@@ -7,7 +7,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.canvas.*?>
 
-<AnchorPane fx:controller="test.TempController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="test.TempController">
 	<children>
 		<Group fx:id="g1">
 			<children>
