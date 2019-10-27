@@ -9,7 +9,7 @@
 
 <GridPane alignment="CENTER" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="test.TestPaneController">
 	<columnConstraints>
-		<ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" />
+		<ColumnConstraints hgrow="SOMETIMES" maxWidth="170.0" minWidth="170.0" prefWidth="170.0" />
 		<ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="1093.0" />
 	</columnConstraints>
 	<rowConstraints>
@@ -24,9 +24,9 @@
             <VBox fx:id="operateVb" prefHeight="1000.0" prefWidth="1435.0" />
          </content>
 		</ScrollPane>
-		<ScrollPane fx:id="stationSp" hbarPolicy="NEVER" prefHeight="150.0" prefWidth="150.0" vbarPolicy="NEVER" GridPane.rowIndex="1">
+		<ScrollPane fx:id="stationSp" hbarPolicy="NEVER" prefHeight="170.0" prefWidth="170.0" vbarPolicy="NEVER" GridPane.rowIndex="1">
          <content>
-            <VBox fx:id="headsVb" prefHeight="1000.0" prefWidth="150.0" />
+            <VBox fx:id="headsVb" prefHeight="1000.0" prefWidth="170.0" />
          </content>
 		</ScrollPane>
 		<ScrollPane fx:id="timeSp" hbarPolicy="NEVER" prefHeight="40.0" prefWidth="200.0" vbarPolicy="NEVER" GridPane.columnIndex="1">

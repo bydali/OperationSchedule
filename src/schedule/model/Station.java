@@ -1,4 +1,4 @@
-package schedule.viewmodel;
+package schedule.model;
 
 public class Station {
 	

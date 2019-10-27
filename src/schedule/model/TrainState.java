@@ -1,4 +1,4 @@
-package schedule.viewmodel;
+package schedule.model;
 
 import java.util.Date;
 

@@ -1,4 +1,4 @@
-package schedule.viewmodel;
+package schedule.model;
 
 public enum TypeViaStation {
 	接车,

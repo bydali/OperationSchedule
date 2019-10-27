@@ -1,6 +1,9 @@
 package test;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.swing.text.Position;
@@ -11,6 +14,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
@@ -24,10 +28,12 @@ import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
+import schedule.station.FoldHeadController;
 
 /**
  * 测试运行图左上单元格长宽为，h=40，w=200
@@ -66,11 +72,16 @@ public class TestPaneController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
-		syncSliding();
-		setPaneSize();
-		drawTime();
-		drawHeads();
-		drawOperateMap();
+		try {
+			syncSliding();
+			setPaneSize();
+			drawTime();
+			drawHeads();
+			drawOperateMap();
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e.getMessage());
+		}	
 	}
 
 	private void setPaneSize() {
@@ -121,8 +132,25 @@ public class TestPaneController implements Initializable {
 		timeAp.getChildren().add(h);
 	}
 
-	private void drawHeads() {
-		
+	private void drawHeads() throws IOException {
+		List<String> stations = new ArrayList<String>();
+		stations.add("赤壁北");
+		stations.add("岳阳东");
+		stations.add("汨罗东");
+		stations.add("长沙南");
+		stations.add("株洲北线路所");
+		stations.add("株洲南线路所");
+		stations.add("株洲西");
+		stations.add("衡山西");
+		stations.add("衡阳东");
+
+		for (String station : stations) {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("../schedule/station/FoldHead.fxml"));
+			AnchorPane ap = (AnchorPane)loader.load();
+			FoldHeadController controller = loader.getController();
+			controller.setData(station);
+			headsVb.getChildren().add(ap);
+		}
 	}
 
 	private void drawOperateMap() {

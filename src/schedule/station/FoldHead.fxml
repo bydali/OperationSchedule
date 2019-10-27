@@ -1,8 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.*?>
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import javafx.scene.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1">
-	<!-- TODO Add Nodes -->
+<AnchorPane
+	xmlns="http://javafx.com/javafx/8"
+	xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="schedule.station.FoldHeadController"
+	fx:id="ap"
+	>
+	<Group>
+		<children>
+			<Label
+				fx:id="stationName"
+				layoutX="50.0"
+				text="Label" />
+			<Circle
+				fx:id="c0"
+				centerX="8.0"
+				centerY="8.0"
+				fill="#9ce40d"
+				radius="8.0"
+				stroke="TRANSPARENT"
+				strokeType="INSIDE" />
+			<Circle
+				fx:id="c1"
+				centerX="25.0"
+				centerY="8.0"
+				fill="#9ce40d"
+				radius="8.0"
+				stroke="TRANSPARENT"
+				strokeType="INSIDE" />
+		</children>
+	</Group>
 </AnchorPane>
-
