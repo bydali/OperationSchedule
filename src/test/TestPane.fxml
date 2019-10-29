@@ -19,24 +19,24 @@
 	</rowConstraints>
 	<children>
 		<Label alignment="CENTER" text="图例" GridPane.halignment="CENTER" />
-		<ScrollPane fx:id="operateSp" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+		<ScrollPane fx:id="operateSp" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" vbarPolicy="NEVER" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <content>
-            <VBox fx:id="operateVb" prefHeight="1000.0" prefWidth="1435.0" />
+            <VBox fx:id="operateVb" />
          </content>
 		</ScrollPane>
 		<ScrollPane fx:id="stationSp" hbarPolicy="NEVER" prefHeight="170.0" prefWidth="170.0" vbarPolicy="NEVER" GridPane.rowIndex="1">
          <content>
-            <VBox fx:id="headsVb" prefHeight="1000.0" prefWidth="170.0" />
+            <VBox fx:id="headsVb" prefWidth="170.0" />
          </content>
 		</ScrollPane>
 		<ScrollPane fx:id="timeSp" hbarPolicy="NEVER" prefHeight="40.0" prefWidth="200.0" vbarPolicy="NEVER" GridPane.columnIndex="1">
 			<content>
-				<AnchorPane fx:id="timeAp" minHeight="0.0" minWidth="0.0" prefHeight="40.0" prefWidth="1435.0" />
+				<AnchorPane fx:id="timeAp" prefHeight="40.0" />
 			</content>
 		</ScrollPane>
 		<ScrollPane fx:id="sp" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="16.0" prefWidth="1093.0" vbarPolicy="NEVER" GridPane.columnIndex="1" GridPane.rowIndex="2">
 			<content>
-				<AnchorPane fx:id="ap" minHeight="0.0" minWidth="0.0" prefHeight="21.0" prefWidth="1435.0" />
+				<AnchorPane fx:id="ap" prefHeight="21.0" />
 			</content>
 		</ScrollPane>
 	</children>

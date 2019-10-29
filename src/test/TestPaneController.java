@@ -33,6 +33,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
+import schedule.station.FoldBodyController;
 import schedule.station.FoldHeadController;
 
 /**
@@ -75,7 +76,7 @@ public class TestPaneController implements Initializable {
 		try {
 			syncSliding();
 			// 测试：画19个小时的画布，这个值应该大于下面时间的差值
-			setPaneSize(19);
+			setPaneSize(24 - 6 + 1);
 			// 测试：画出从6点到24点的时间
 			drawTime(6, 24);
 			drawHeads();
@@ -87,9 +88,7 @@ public class TestPaneController implements Initializable {
 	}
 
 	private void setPaneSize(int count) {
-		timeAp.setPrefWidth(hourInterval * count);
-		operateVb.setPrefWidth(hourInterval * count);
-		ap.setPrefWidth(hourInterval * count);
+		ap.setPrefWidth(leftOffset + hourInterval * count);
 	}
 
 	private void drawTime(int startTime, int endTime) {
@@ -135,6 +134,7 @@ public class TestPaneController implements Initializable {
 	}
 
 	private void drawHeads() throws IOException {
+		// 测试：9个车站
 		List<String> stations = new ArrayList<String>();
 		stations.add("赤壁北");
 		stations.add("岳阳东");
@@ -155,8 +155,14 @@ public class TestPaneController implements Initializable {
 		}
 	}
 
-	private void drawOperateMap() {
-
+	private void drawOperateMap() throws IOException {
+		for (int i = 0; i < 9; i++) {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("../schedule/station/FoldBody.fxml"));
+			AnchorPane ap = (AnchorPane) loader.load();
+			FoldBodyController controller = loader.getController();
+			controller.setData(50, 100, leftOffset, hourInterval, decadeInterval, 6, 24);
+			operateVb.getChildren().add(ap);
+		}
 	}
 
 	private void syncSliding() {
