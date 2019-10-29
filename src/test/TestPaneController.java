@@ -74,30 +74,32 @@ public class TestPaneController implements Initializable {
 		// TODO Auto-generated method stub
 		try {
 			syncSliding();
-			setPaneSize();
-			drawTime();
+			// 测试：画19个小时的画布，这个值应该大于下面时间的差值
+			setPaneSize(19);
+			// 测试：画出从6点到24点的时间
+			drawTime(6, 24);
 			drawHeads();
 			drawOperateMap();
 		} catch (Exception e) {
 			// TODO: handle exception
 			System.out.println(e.getMessage());
-		}	
+		}
 	}
 
-	private void setPaneSize() {
-		timeAp.setPrefWidth(hourInterval * 19);
-		operateVb.setPrefWidth(hourInterval * 19);
-		ap.setPrefWidth(hourInterval * 19);
+	private void setPaneSize(int count) {
+		timeAp.setPrefWidth(hourInterval * count);
+		operateVb.setPrefWidth(hourInterval * count);
+		ap.setPrefWidth(hourInterval * count);
 	}
 
-	private void drawTime() {
+	private void drawTime(int startTime, int endTime) {
 		int topOffsetHour = 18;
 		int topOffsetDecade = 23;
 		int lenOfHourLine = 15;
 		int lenOfDecadeLine = 7;
 
-		for (int i = 6; i <= 24; i++) {
-			double startX = leftOffset + (i - 6) * hourInterval;
+		for (int i = startTime; i <= endTime; i++) {
+			double startX = leftOffset + (i - startTime) * hourInterval;
 			double endY = topOffsetHour + lenOfHourLine;
 			Line hour = new Line(startX, topOffsetHour, startX, endY);
 			hour.setStroke(Color.RED);
@@ -125,7 +127,7 @@ public class TestPaneController implements Initializable {
 
 		double startX = leftOffset;
 		double startY = topOffsetDecade + lenOfDecadeLine / 2;
-		double endX = startX + hourInterval * (24 - 6 + 1);
+		double endX = startX + hourInterval * (endTime - startTime + 1);
 		Line h = new Line(startX, startY, endX, startY);
 		h.setStroke(Color.RED);
 		h.setStrokeWidth(0.5);
@@ -146,9 +148,9 @@ public class TestPaneController implements Initializable {
 
 		for (String station : stations) {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("../schedule/station/FoldHead.fxml"));
-			AnchorPane ap = (AnchorPane)loader.load();
+			AnchorPane ap = (AnchorPane) loader.load();
 			FoldHeadController controller = loader.getController();
-			controller.setData(station);
+			controller.setData(station, 50, 100);
 			headsVb.getChildren().add(ap);
 		}
 	}

@@ -29,16 +29,14 @@ public class FoldHeadController implements Initializable {
 
 	}
 
-	public void setData(String stationName) {
+	public void setData(String stationName, double upHeight, double bottomHeight) {
 		String replace = "";
 		for (int i = 0; i < stationName.length(); i++) {
 			replace += stationName.charAt(i) + " ";
 		}
 		this.stationName.setText(replace);
 
-		double upHeight = 50;
-		double bottomHeight = 100;
-		ap.prefHeight(upHeight + bottomHeight);
+		ap.setPrefHeight(upHeight + bottomHeight);
 
 		c0.setCenterY(upHeight);
 		c1.setCenterY(upHeight);
