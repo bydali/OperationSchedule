@@ -168,9 +168,8 @@
 					<children>
 						<TabPane layoutX="122.0" layoutY="130.0" prefHeight="200.0" prefWidth="200.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
 							<tabs>
-								<Tab closable="false" text="行">
+								<Tab fx:id="operateTab" closable="false" text="行">
 									<content>
-										<AnchorPane fx:id="operateTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
 									</content>
 								</Tab>
 								<Tab closable="false" text="日">

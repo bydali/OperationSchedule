@@ -1,5 +1,5 @@
 package schedule.viewmodel;
 
-public class EdgeTask {
+public class EdgeTaskVM {
 
 }
