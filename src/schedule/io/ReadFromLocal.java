@@ -10,5 +10,4 @@ public class ReadFromLocal {
 	public static TimeTable readTT() {
 		return new TimeTable();
 	}
-
 }
