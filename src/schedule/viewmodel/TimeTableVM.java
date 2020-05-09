@@ -17,6 +17,7 @@ public class TimeTableVM {
 	}
 
 	private void generateTimeTableVM() {
+		// 生成原始时刻表数据
 		timeTable = ReadFromLocal.readTT();
 		allStationVM = new ArrayList<StationVM>();
 		for (Station station : timeTable.getAllStation()) {

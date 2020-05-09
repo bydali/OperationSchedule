@@ -31,6 +31,7 @@ public class MainController implements Initializable {
 	public void setData(TimeTableVM timeTableVM) throws IOException {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("OperateChart.fxml"));
 		GridPane gp = (GridPane) loader.load();
+		
 		OperateChartController controller = loader.getController();
 		controller.setData();
 		operateTab.setContent(gp);

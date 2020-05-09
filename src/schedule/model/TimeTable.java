@@ -1,5 +1,9 @@
 package schedule.model;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -29,6 +33,35 @@ public class TimeTable {
 				new TrainState(5, "101001", "101", LocalTime.of(8, 20, 0), new Station("汨罗东"), "1", TypeViaStation.接车),
 				new TrainState(6, "101001", "101", LocalTime.of(8, 25, 0), new Station("汨罗东"), "1", TypeViaStation.发车));
 		generateAllEdgeTask(allTrainState);
+	}
+
+	public void readFileByLines(String fileName) {
+		allStation = new ArrayList<Station>();
+
+		File file = new File(fileName);
+		BufferedReader reader = null;
+		try {
+			reader = new BufferedReader(new FileReader(file));
+			String tempString = null;
+			while ((tempString = reader.readLine()) != null) {
+				Station station = generateStation(tempString);
+				allStation.add(station);
+			}
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (reader != null) {
+				try {
+					reader.close();
+				} catch (IOException e1) {
+				}
+			}
+		}
+	}
+
+	public Station generateStation(String str) {
+		return new Station(str);
 	}
 
 	public TimeTable(List<TrainState> allTrainState) {

@@ -18,7 +18,7 @@ public class Main extends Application {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
 			BorderPane root = (BorderPane) loader.load();
-			
+
 			setData(loader.getController());
 
 			Scene scene = new Scene(root, 1680, 1050);
@@ -30,8 +30,11 @@ public class Main extends Application {
 		}
 	}
 
+	// 初始化时刻大表
 	private void setData(MainController controller) throws IOException {
+		// 生成时刻表viewmodel
 		TimeTableVM timeTableVM = new TimeTableVM();
+		// 主界面控制器设置viewmodel到主界面控件
 		controller.setData(timeTableVM);
 	}
 
