@@ -238,7 +238,7 @@ public class OperateChartController implements Initializable {
 	private void drawHeads(List<StationVM> allStationsVM) throws IOException {
 		stationsOrder = new ArrayList<>();
 		for (StationVM stationVM : allStationsVM) {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("../station/FoldHead.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("FoldHead.fxml"));
 			AnchorPane ap = (AnchorPane) loader.load();
 			FoldHeadController controller = loader.getController();
 			controller.setData(stationVM.getStationName(), upHeight, bottomHeight);
@@ -250,7 +250,7 @@ public class OperateChartController implements Initializable {
 
 	private void drawOperateMap(int stationSize) throws IOException {
 		for (int i = 0; i < stationSize; i++) {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("../station/FoldBody.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("FoldBody.fxml"));
 			AnchorPane ap = (AnchorPane) loader.load();
 			FoldBodyController controller = loader.getController();
 			controller.setData(upHeight, bottomHeight, leftOffset, hourInterval, hourInterval / 6, startTime, endTime);

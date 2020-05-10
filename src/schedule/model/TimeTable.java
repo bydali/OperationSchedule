@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -52,10 +53,7 @@ public class TimeTable {
 	public void readAllStations(String path) throws IOException {
 		allStation = new ArrayList<Station>();
 
-		File file = new File(path);
-		BufferedReader reader = null;
-
-		reader = new BufferedReader(new FileReader(file));
+		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(path), "UTF-8"));
 		String tempString = null;
 		while ((tempString = reader.readLine()) != null) {
 			Station station = generateStation(tempString);
