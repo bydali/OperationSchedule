@@ -2,6 +2,7 @@ package schedule.model;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -11,53 +12,95 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
+import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class TimeTable {
 
-	private List<TrainState> allTrainState;
-	private List<EdgeTask> allTrainTask;
+	public List<TrainState> allTrainState;
+
+	public Map<String, List<TrainState>> trainPointTask;
+
+	public Map<String, List<EdgeTask>> trainEdgeTask;
+
 	private List<Station> allStation;
 
-	// 测试构造函数
-	public TimeTable() {
-		// TODO Auto-generated constructor stub
-		allStation = Arrays.asList(new Station("赤壁北"), new Station("岳阳东"), new Station("汨罗东"), new Station("长沙南"),
-				new Station("株洲北线路所"), new Station("株洲南线路所"), new Station("株洲西"), new Station("衡山西"),
-				new Station("衡阳东"));
-		allTrainState = Arrays.asList(
-				new TrainState(1, "101001", "101", LocalTime.of(8, 0, 0), new Station("赤壁北"), "1", TypeViaStation.接车),
-				new TrainState(2, "101001", "101", LocalTime.of(8, 5, 0), new Station("赤壁北"), "1", TypeViaStation.发车),
-				new TrainState(3, "101001", "101", LocalTime.of(8, 10, 0), new Station("岳阳东"), "1", TypeViaStation.接车),
-				new TrainState(4, "101001", "101", LocalTime.of(8, 15, 0), new Station("岳阳东"), "1", TypeViaStation.发车),
-				new TrainState(5, "101001", "101", LocalTime.of(8, 20, 0), new Station("汨罗东"), "1", TypeViaStation.接车),
-				new TrainState(6, "101001", "101", LocalTime.of(8, 25, 0), new Station("汨罗东"), "1", TypeViaStation.发车));
-		generateAllEdgeTask(allTrainState);
+	public List<Station> getAllStation() {
+		return allStation;
 	}
 
-	public void readFileByLines(String fileName) {
+	// 测试构造函数
+	public TimeTable(String stationPath, String timeTablePath) throws IOException {
+		// TODO Auto-generated constructor stub
+		readAllStations(stationPath);
+		readAllTrainStates(timeTablePath);
+
+		generateAllEdgeTask();
+	}
+
+	// 从配置文件读取车站
+	public void readAllStations(String path) throws IOException {
 		allStation = new ArrayList<Station>();
 
-		File file = new File(fileName);
+		File file = new File(path);
 		BufferedReader reader = null;
-		try {
-			reader = new BufferedReader(new FileReader(file));
-			String tempString = null;
-			while ((tempString = reader.readLine()) != null) {
-				Station station = generateStation(tempString);
-				allStation.add(station);
-			}
-			reader.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (reader != null) {
-				try {
-					reader.close();
-				} catch (IOException e1) {
-				}
-			}
+
+		reader = new BufferedReader(new FileReader(file));
+		String tempString = null;
+		while ((tempString = reader.readLine()) != null) {
+			Station station = generateStation(tempString);
+			allStation.add(station);
 		}
+		reader.close();
+	}
+
+	// 读取时刻表
+	public void readAllTrainStates(String path) throws IOException {
+		allTrainState = new ArrayList<>();
+
+		XSSFRow row;
+		FileInputStream fis = new FileInputStream(new File(path));
+		XSSFWorkbook workbook = new XSSFWorkbook(fis);
+		XSSFSheet spreadsheet = workbook.getSheetAt(0);
+		Iterator<Row> rowIterator = spreadsheet.iterator();
+
+		int rowNum = 1;
+
+		while (rowIterator.hasNext()) {
+			// 跳过表头
+			row = (XSSFRow) rowIterator.next();
+			Iterator<Cell> cellIterator = row.cellIterator();
+			if (rowNum != 1) {
+				List<Object> props = new ArrayList<>();
+				while (cellIterator.hasNext()) {
+					Cell cell = cellIterator.next();
+					switch (cell.getCellType()) {
+					case NUMERIC:
+						props.add((int) cell.getNumericCellValue());
+						break;
+					case STRING:
+						props.add(cell.getStringCellValue());
+						break;
+					default:
+						break;
+					}
+				}
+				allTrainState.add(new TrainState(props));
+			}
+			rowNum++;
+		}
+		workbook.close();
+		fis.close();
 	}
 
 	public Station generateStation(String str) {
@@ -67,25 +110,40 @@ public class TimeTable {
 	public TimeTable(List<TrainState> allTrainState) {
 		// TODO Auto-generated constructor stub
 		this.allTrainState = allTrainState;
-		generateAllEdgeTask(allTrainState);
+		generateAllEdgeTask();
 	}
 
-	private void generateAllEdgeTask(List<TrainState> allTrainState) {
-		Collections.sort(allTrainState, new Comparator<TrainState>() {
-			public int compare(TrainState o1, TrainState o2) {
-				return o1.getTime().compareTo(o2.getTime());
+	public void generateAllEdgeTask() {
+		// 按车次整理任务
+		trainPointTask = new HashMap<String, List<TrainState>>();
+		for (TrainState trainState : allTrainState) {
+			if (!trainPointTask.containsKey(trainState.trainNum)) {
+				List<TrainState> list = new ArrayList<TrainState>();
+				list.add(trainState);
+
+				trainPointTask.put(trainState.trainNum, list);
+			} else {
+				trainPointTask.get(trainState.trainNum).add(trainState);
 			}
-		});
-		allTrainTask = new ArrayList<EdgeTask>();
-		for (int i = 0; i < allTrainState.size() - 1; i++) {
-			TrainState firstTrain = allTrainState.get(i);
-			TrainState secondTrain = allTrainState.get(i + 1);
-
-			allTrainTask.add(new EdgeTask(firstTrain, secondTrain));
 		}
-	}
 
-	public List<Station> getAllStation() {
-		return allStation;
+		// 对单个车次任务在时间上排序
+		trainEdgeTask = new HashMap<String, List<EdgeTask>>();
+		for (String key : trainPointTask.keySet()) {
+			Collections.sort(trainPointTask.get(key), new Comparator<TrainState>() {
+				public int compare(TrainState o1, TrainState o2) {
+					return o1.time.compareTo(o2.time);
+				}
+			});
+
+			List<EdgeTask> edgeTask = new ArrayList<EdgeTask>();
+			for (int i = 0; i < trainPointTask.get(key).size() - 2; i++) {
+				TrainState firstTrain = trainPointTask.get(key).get(i);
+				TrainState secondTrain = trainPointTask.get(key).get(i + 1);
+
+				edgeTask.add(new EdgeTask(firstTrain, secondTrain));
+			}
+			trainEdgeTask.put(key, edgeTask);
+		}
 	}
 }

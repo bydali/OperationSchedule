@@ -44,7 +44,6 @@ public class FoldBodyController implements Initializable {
 		double endX = startX + hourInterval * (endTime - startTime + 1);
 		Line h = new Line(startX, startY, endX, startY);
 		h.setStroke(Color.FORESTGREEN);
-		h.setStrokeWidth(0.5);
 		ap.getChildren().add(h);
 	}
 

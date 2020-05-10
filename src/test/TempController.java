@@ -24,7 +24,8 @@ public class TempController implements Initializable {
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
-				System.out.println("sfsaffdasdf");
+				// System.out.println("sfsaffdasdf");
+				g2.getChildren().clear();
 			}
 		});
 	}
