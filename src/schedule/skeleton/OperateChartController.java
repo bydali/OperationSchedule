@@ -34,7 +34,6 @@ import javafx.scene.shape.Polyline;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import schedule.model.EdgeTask;
 import schedule.model.TrainState;
 import schedule.station.FoldBodyController;
 import schedule.station.FoldHeadController;
@@ -114,11 +113,11 @@ public class OperateChartController implements Initializable {
 	private void drawAllTrainEdgeTask(TimeTableVM timeTableVM) {
 		// TODO Auto-generated method stub
 		polylineStatue = new HashedMap<>();
-		for (String key : timeTableVM.timeTable.trainPointTask.keySet()) {
+		for (String key : timeTableVM.timeTable.allTrainPointTask.keySet()) {
 			// 画车次任务
 			Polyline polyline = new Polyline();
 			List<Double> allPoints = new ArrayList<>();
-			for (TrainState trainState : timeTableVM.timeTable.trainPointTask.get(key)) {
+			for (TrainState trainState : timeTableVM.timeTable.allTrainPointTask.get(key)) {
 				int seconds = trainState.time.toSecondOfDay() - startTime * 3600;
 				double x = leftOffset + seconds * ((double) hourInterval / 3600);
 				int yIndex = stationsOrder.indexOf(trainState.stationName);
@@ -166,19 +165,19 @@ public class OperateChartController implements Initializable {
 			polylineStatue.put(polyline, rectList);
 
 			// 画时间
-			for (int i = 0; i < timeTableVM.timeTable.trainPointTask.get(key).size(); i++) {
+			for (int i = 0; i < timeTableVM.timeTable.allTrainPointTask.get(key).size(); i++) {
 				Text minute = new Text();
 				minute.setText(
-						String.valueOf(timeTableVM.timeTable.trainPointTask.get(key).get(i).time.getMinute() % 10));
+						String.valueOf(timeTableVM.timeTable.allTrainPointTask.get(key).get(i).time.getMinute() % 10));
 				minute.setX(allPoints.get(i * 2) - 5);
 				minute.setY(allPoints.get(i * 2 + 1) - 7);
 				operateGroup.getChildren().add(minute);
 			}
 
 			// 画股道
-			for (int i = 0; i < timeTableVM.timeTable.trainPointTask.get(key).size(); i++) {
+			for (int i = 0; i < timeTableVM.timeTable.allTrainPointTask.get(key).size(); i++) {
 				Text minute = new Text();
-				minute.setText(String.valueOf(timeTableVM.timeTable.trainPointTask.get(key).get(i).track));
+				minute.setText(String.valueOf(timeTableVM.timeTable.allTrainPointTask.get(key).get(i).track));
 				minute.setX(allPoints.get(i * 2) - 7);
 				minute.setY(allPoints.get(i * 2 + 1) + 18);
 				operateGroup.getChildren().add(minute);

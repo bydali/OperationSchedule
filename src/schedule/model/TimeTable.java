@@ -30,11 +30,11 @@ public class TimeTable {
 
 	public List<TrainState> allTrainState;
 
-	public Map<String, List<TrainState>> trainPointTask;
+	public Map<String, List<TrainState>> allTrainPointTask;
 
-	public Map<String, List<EdgeTask>> trainEdgeTask;
+	public List<FullTask> allTrainFullTask;
 
-	private List<Station> allStation;
+	public List<Station> allStation;
 
 	public List<Station> getAllStation() {
 		return allStation;
@@ -46,7 +46,7 @@ public class TimeTable {
 		readAllStations(stationPath);
 		readAllTrainStates(timeTablePath);
 
-		generateAllEdgeTask();
+		generateAllIOTask();
 	}
 
 	// 从配置文件读取车站
@@ -108,40 +108,80 @@ public class TimeTable {
 	public TimeTable(List<TrainState> allTrainState) {
 		// TODO Auto-generated constructor stub
 		this.allTrainState = allTrainState;
-		generateAllEdgeTask();
+		generateAllIOTask();
 	}
 
-	public void generateAllEdgeTask() {
-		// 按车次整理任务
-		trainPointTask = new HashMap<String, List<TrainState>>();
+	public void generateAllIOTask() {
+		// 按车次整理任务，每趟车次的路径放在字典中
+		allTrainPointTask = new HashMap<String, List<TrainState>>();
 		for (TrainState trainState : allTrainState) {
-			if (!trainPointTask.containsKey(trainState.trainNum)) {
+			if (!allTrainPointTask.containsKey(trainState.trainNum)) {
 				List<TrainState> list = new ArrayList<TrainState>();
 				list.add(trainState);
 
-				trainPointTask.put(trainState.trainNum, list);
+				allTrainPointTask.put(trainState.trainNum, list);
 			} else {
-				trainPointTask.get(trainState.trainNum).add(trainState);
+				allTrainPointTask.get(trainState.trainNum).add(trainState);
 			}
 		}
 
-		// 对单个车次任务在时间上排序
-		trainEdgeTask = new HashMap<String, List<EdgeTask>>();
-		for (String key : trainPointTask.keySet()) {
-			Collections.sort(trainPointTask.get(key), new Comparator<TrainState>() {
+		allTrainFullTask = new ArrayList<>();
+		for (String key : allTrainPointTask.keySet()) {
+			// 进一步整理车次的路径信息，将路径信息按时间排序
+			Collections.sort(allTrainPointTask.get(key), new Comparator<TrainState>() {
 				public int compare(TrainState o1, TrainState o2) {
 					return o1.time.compareTo(o2.time);
 				}
 			});
 
-			List<EdgeTask> edgeTask = new ArrayList<EdgeTask>();
-			for (int i = 0; i < trainPointTask.get(key).size() - 2; i++) {
-				TrainState firstTrain = trainPointTask.get(key).get(i);
-				TrainState secondTrain = trainPointTask.get(key).get(i + 1);
-
-				edgeTask.add(new EdgeTask(firstTrain, secondTrain));
+			List<StationIO> allStationIO = new ArrayList<>();
+			for (Station station : allStation) {
+				allStationIO.add(new StationIO(station.getStationName()));
 			}
-			trainEdgeTask.put(key, edgeTask);
+
+			for (int i = 0; i < allTrainPointTask.get(key).size(); i++) {
+				for (int j = 0; j < allStationIO.size(); j++) {
+					if (allTrainPointTask.get(key).get(i).stationName.equals(allStationIO.get(j).stationName)) {
+						if (i == 0) {
+							allStationIO.get(j).outTime = allTrainPointTask.get(key).get(i).time;
+							break;
+						}
+						if (allStationIO.get(j).inTime == null) {
+							allStationIO.get(j).inTime = allTrainPointTask.get(key).get(i).time;
+						} else {
+							allStationIO.get(j).outTime = allTrainPointTask.get(key).get(i).time;
+						}
+						break;
+					}
+				}
+			}
+
+			for (int i = 0; i < allStationIO.size(); i++) {
+				if (i != 0 && i != allStationIO.size() - 1) {
+					if (allStationIO.get(i).outTime == null) {
+						allStationIO.get(i).outTime = allStationIO.get(i).inTime;
+					}
+				}
+			}
+
+			FullTask fullTask = new FullTask(key, allStationIO);
+			allTrainFullTask.add(fullTask);
+		}
+	}
+
+	public void updateTrainState(String trainNum, String oldTime, String newTime) {
+		// TODO Auto-generated method stub
+		String[] oldTimeInfo = oldTime.split(":");
+		LocalTime old = LocalTime.of(Integer.parseInt(oldTimeInfo[0]), Integer.parseInt(oldTimeInfo[1]),
+				Integer.parseInt(oldTimeInfo[2]));
+		for (TrainState trainState : allTrainPointTask.get(trainNum)) {
+			if (trainState.time.equals(old)) {
+				String[] newTimeInfo = newTime.split(":");
+				LocalTime newT = LocalTime.of(Integer.parseInt(newTimeInfo[0]), Integer.parseInt(newTimeInfo[1]),
+						Integer.parseInt(newTimeInfo[2]));
+				trainState.time = newT;
+				break;
+			}
 		}
 	}
 }
