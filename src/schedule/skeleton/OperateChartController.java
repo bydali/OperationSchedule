@@ -77,7 +77,7 @@ public class OperateChartController implements Initializable {
 	private final int startTime = 6;
 	private final int endTime = 24;
 	private final int upHeight = 50;
-	private final int bottomHeight = 150;
+	private final int bottomHeight = 80;
 
 	private List<String> stationsOrder;
 	private Map<Polyline, List<Rectangle>> polylineStatue;

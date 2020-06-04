@@ -54,8 +54,8 @@ public class TimeTableVM {
 		}
 	}
 
-	public void updateTrainState(String oldTrainNum, String oldTime, String newTime) {
+	public void updateTrainState(String oldTrainNum, String oldTime, String newTime, String inOrOut) {
 		// TODO Auto-generated method stub
-		timeTable.updateTrainState(oldTrainNum, oldTime, newTime);
+		timeTable.updateTrainState(oldTrainNum, oldTime, newTime, inOrOut);
 	}
 }

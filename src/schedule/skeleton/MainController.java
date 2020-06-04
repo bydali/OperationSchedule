@@ -96,7 +96,7 @@ public class MainController implements Initializable {
 				String newInTime = t.getNewValue();
 				rowData.set(col_in_idx, new SimpleStringProperty(newInTime));
 
-				refresh(oldTrainNum, oldInTime, newInTime);
+				refresh(oldTrainNum, oldInTime, newInTime, "接车");
 			});
 
 			TableColumn<List<SimpleStringProperty>, String> col_out = new TableColumn<>("发车");
@@ -111,7 +111,7 @@ public class MainController implements Initializable {
 				String newOutTime = t.getNewValue();
 				rowData.set(col_out_idx, new SimpleStringProperty(newOutTime));
 
-				refresh(oldTrainNum, oldOutTime, newOutTime);
+				refresh(oldTrainNum, oldOutTime, newOutTime, "发车");
 			});
 
 			col.getColumns().add(col_in);
@@ -124,8 +124,8 @@ public class MainController implements Initializable {
 
 	}
 
-	private void refresh(String oldTrainNum, String oldTime, String newTime) {
-		timeTableVM.updateTrainState(oldTrainNum, oldTime, newTime);
+	private void refresh(String oldTrainNum, String oldTime, String newTime, String inOrOut) {
+		timeTableVM.updateTrainState(oldTrainNum, oldTime, newTime, inOrOut);
 		timeTableVM.timeTable.generateAllIOTask();
 		mapController.refreshMap(timeTableVM);
 	}

@@ -93,7 +93,19 @@ public class TimeTable {
 						break;
 					}
 				}
-				allTrainState.add(new TrainState(props));
+				switch (props.get(props.size() - 1).toString()) {
+				case "通过":
+					props.remove(props.size() - 1);
+					props.add("接车");
+					allTrainState.add(new TrainState(props));
+					props.remove(props.size() - 1);
+					props.add("发车");
+					allTrainState.add(new TrainState(props));
+					break;
+				default:
+					allTrainState.add(new TrainState(props));
+					break;
+				}
 			}
 			rowNum++;
 		}
@@ -156,26 +168,18 @@ public class TimeTable {
 				}
 			}
 
-			for (int i = 0; i < allStationIO.size(); i++) {
-				if (i != 0 && i != allStationIO.size() - 1) {
-					if (allStationIO.get(i).outTime == null) {
-						allStationIO.get(i).outTime = allStationIO.get(i).inTime;
-					}
-				}
-			}
-
 			FullTask fullTask = new FullTask(key, allStationIO);
 			allTrainFullTask.add(fullTask);
 		}
 	}
 
-	public void updateTrainState(String trainNum, String oldTime, String newTime) {
+	public void updateTrainState(String trainNum, String oldTime, String newTime, String inOrOut) {
 		// TODO Auto-generated method stub
 		String[] oldTimeInfo = oldTime.split(":");
 		LocalTime old = LocalTime.of(Integer.parseInt(oldTimeInfo[0]), Integer.parseInt(oldTimeInfo[1]),
 				Integer.parseInt(oldTimeInfo[2]));
 		for (TrainState trainState : allTrainPointTask.get(trainNum)) {
-			if (trainState.time.equals(old)) {
+			if (trainState.time.equals(old) && trainState.type.equals(inOrOut)) {
 				String[] newTimeInfo = newTime.split(":");
 				LocalTime newT = LocalTime.of(Integer.parseInt(newTimeInfo[0]), Integer.parseInt(newTimeInfo[1]),
 						Integer.parseInt(newTimeInfo[2]));
