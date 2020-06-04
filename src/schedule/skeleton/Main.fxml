@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.chart.XYChart?>
 
-<BorderPane prefHeight="759.0" prefWidth="1278.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="schedule.skeleton.MainController">
+<BorderPane id="border" prefHeight="759.0" prefWidth="1278.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="schedule.skeleton.MainController">
 	<top>
 		<MenuBar BorderPane.alignment="CENTER">
 			<menus>
@@ -132,7 +132,7 @@
 		</MenuBar>
 	</top>
 	<bottom>
-		<GridPane prefHeight="45.0" prefWidth="1278.0" BorderPane.alignment="CENTER">
+		<GridPane prefHeight="40.0" prefWidth="1278.0" BorderPane.alignment="CENTER">
 			<columnConstraints>
 				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
 				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -186,7 +186,7 @@
 						</TabPane>
 					</children>
 				</AnchorPane>
-            <TableView fx:id="trainStateView" prefHeight="200.0" prefWidth="200.0" editable="true"/>
+            <TableView fx:id="trainStateView" editable="true" prefHeight="200.0" prefWidth="200.0" />
 			</items>
 		</SplitPane>
 	</center>

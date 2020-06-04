@@ -1,1 +1,7 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+.root{
+	-fx-font-size: 14pt;
+    -fx-font-family: "Microsoft YaHei";
+    -fx-base: rgb(2, 50, 79);
+    -fx-background: rgb(2, 50, 79);
+}

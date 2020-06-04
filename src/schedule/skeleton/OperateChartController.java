@@ -167,6 +167,7 @@ public class OperateChartController implements Initializable {
 			// 画时间
 			for (int i = 0; i < timeTableVM.timeTable.allTrainPointTask.get(key).size(); i++) {
 				Text minute = new Text();
+				minute.setFill(Color.WHITE);
 				minute.setText(
 						String.valueOf(timeTableVM.timeTable.allTrainPointTask.get(key).get(i).time.getMinute() % 10));
 				minute.setX(allPoints.get(i * 2) - 5);
@@ -177,6 +178,7 @@ public class OperateChartController implements Initializable {
 			// 画股道
 			for (int i = 0; i < timeTableVM.timeTable.allTrainPointTask.get(key).size(); i++) {
 				Text minute = new Text();
+				minute.setFill(Color.WHITE);
 				minute.setText(String.valueOf(timeTableVM.timeTable.allTrainPointTask.get(key).get(i).track));
 				minute.setX(allPoints.get(i * 2) - 7);
 				minute.setY(allPoints.get(i * 2 + 1) + 18);
