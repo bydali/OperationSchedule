@@ -22,6 +22,5 @@
 	<classpathentry kind="lib" path="libs/poi-scratchpad-4.1.2.jar"/>
 	<classpathentry kind="lib" path="libs/SparseBitSet-1.2.jar"/>
 	<classpathentry kind="lib" path="libs/xmlbeans-3.1.0.jar"/>
-	<classpathentry kind="lib" path="libs/UndecoratorBis.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
