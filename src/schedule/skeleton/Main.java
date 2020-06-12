@@ -16,6 +16,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -59,6 +60,9 @@ public class Main extends Application {
 			Scene scene = new Scene(root, 1680, 1050);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
+			primaryStage.setTitle("车载列车运行图可视化");
+			primaryStage.getIcons().add(new Image(
+	                getClass().getResourceAsStream("app_icon.PNG")));
 			primaryStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();
