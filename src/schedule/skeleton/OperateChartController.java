@@ -14,16 +14,21 @@ import org.w3c.dom.css.Rect;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Side;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -136,17 +141,44 @@ public class OperateChartController implements Initializable {
 				@Override
 				public void handle(MouseEvent event) {
 					// TODO Auto-generated method stub
-					// System.out.println("sfsaffdasdf");
-					List<Rectangle> tmp = polylineStatue.get((Polyline) event.getSource());
-					for (Rectangle rect : polylineStatue.get((Polyline) event.getSource())) {
-						if (rect.isVisible()) {
-							rect.setVisible(false);
-						} else {
-							rect.setVisible(true);
+					switch (event.getButton()) {
+					case PRIMARY:
+						List<Rectangle> tmp = polylineStatue.get((Polyline) event.getSource());
+						for (Rectangle rect : polylineStatue.get((Polyline) event.getSource())) {
+							if (rect.isVisible()) {
+								rect.setVisible(false);
+							} else {
+								rect.setVisible(true);
+							}
 						}
+						break;
+					default:
+						break;
 					}
 				}
 			});
+			MenuItem mI0 = new MenuItem("高亮");
+			MenuItem mI1 = new MenuItem("取消高亮");
+			mI0.setOnAction(new EventHandler<ActionEvent>() {
+				public void handle(ActionEvent event) {
+					polyline.setStroke(Color.LIGHTGREEN);
+				}
+			});
+			mI1.setOnAction(new EventHandler<ActionEvent>() {
+				public void handle(ActionEvent event) {
+					polyline.setStroke(Color.LIGHTPINK);
+				}
+			});
+
+			ContextMenu cM = new ContextMenu();
+			cM.getItems().add(mI0);
+			cM.getItems().add(mI1);
+			polyline.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
+	            @Override
+	            public void handle(ContextMenuEvent event) {
+	                cM.show(polyline, event.getScreenX(), event.getScreenY());
+	            }
+	        });
 
 			// 画车站标记
 			int rectSize = 6;
