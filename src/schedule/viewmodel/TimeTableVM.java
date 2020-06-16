@@ -18,11 +18,7 @@ public class TimeTableVM {
 
 	public TimeTable timeTable;
 
-	private List<StationVM> allStationVM;
-
-	public List<StationVM> getAllStationVM() {
-		return allStationVM;
-	}
+	public static List<StationVM> allStationVM;
 
 	public ObservableList<List<SimpleStringProperty>> fullTaskVMList;
 
@@ -37,7 +33,7 @@ public class TimeTableVM {
 
 		// 生成全部车站viewmodel
 		allStationVM = new ArrayList<StationVM>();
-		for (Station station : timeTable.getAllStation()) {
+		for (Station station : timeTable.allStation) {
 			allStationVM.add(new StationVM(station));
 		}
 

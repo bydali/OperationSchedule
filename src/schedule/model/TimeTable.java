@@ -36,10 +36,6 @@ public class TimeTable {
 
 	public List<Station> allStation;
 
-	public List<Station> getAllStation() {
-		return allStation;
-	}
-
 	// 测试构造函数
 	public TimeTable(String stationPath, String timeTablePath) throws IOException {
 		// TODO Auto-generated constructor stub

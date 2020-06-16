@@ -13,10 +13,15 @@ import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -25,7 +30,13 @@ import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.image.Image;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import schedule.model.TrainState;
 import schedule.station.FoldBodyController;
@@ -63,6 +74,44 @@ public class MainController implements Initializable {
 		controller.setData(timeTableVM);
 		operateTab.setContent(gp);
 
+		MenuItem mI = new MenuItem("实时报点");
+		mI.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				List<SimpleStringProperty> selectItemList = trainStateView.getSelectionModel().getSelectedItem();
+
+				// 打开报点的stage
+				Stage reportTime = new Stage();
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("ReportTime.fxml"));
+				AnchorPane root;
+				try {
+					root = (AnchorPane) loader.load();
+					Scene reportScene = new Scene(root, 500, 200);
+					reportScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+					reportTime.setScene(reportScene);
+					reportTime.setResizable(false);
+					reportTime.setTitle("列车报点");
+					reportTime.getIcons().add(new Image(getClass().getResourceAsStream("app_icon.PNG")));
+					// reportTime.initOwner(stage);
+					// reportTime.initModality(Modality.WINDOW_MODAL);
+					ReportTimeController reportTimeController = loader.getController();
+					reportTimeController.setData(trainStateView.getSelectionModel().getSelectedItem());
+					reportTime.show();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+
+		ContextMenu cM = new ContextMenu();
+		cM.getItems().add(mI);
+		trainStateView.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
+			@Override
+			public void handle(ContextMenuEvent event) {
+				cM.show(trainStateView, event.getScreenX(), event.getScreenY());
+			}
+		});
+
 		TableColumn<List<SimpleStringProperty>, String> col0 = new TableColumn<>("车次");
 		col0.setMinWidth(100);
 		col0.setCellValueFactory(data -> data.getValue().get(0));
@@ -76,9 +125,9 @@ public class MainController implements Initializable {
 
 		trainStateView.getColumns().add(col0);
 
-		for (int i = 0; i < timeTableVM.getAllStationVM().size(); i++) {
+		for (int i = 0; i < timeTableVM.allStationVM.size(); i++) {
 			TableColumn<List<SimpleStringProperty>, String> col = new TableColumn<>(
-					timeTableVM.getAllStationVM().get(i).getStationName());
+					timeTableVM.allStationVM.get(i).getStationName());
 			col.setMinWidth(200);
 
 			int col_in_idx = 1 + i * 2;

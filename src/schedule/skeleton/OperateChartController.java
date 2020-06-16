@@ -97,8 +97,8 @@ public class OperateChartController implements Initializable {
 		syncSliding();
 		setPaneSize(endTime - startTime);
 		drawTime(startTime, endTime);
-		drawHeads(timeTableVM.getAllStationVM());
-		drawOperateMap(timeTableVM.getAllStationVM().size());
+		drawHeads(timeTableVM.allStationVM);
+		drawOperateMap(timeTableVM.allStationVM.size());
 		drawAllTrainEdgeTask(timeTableVM);
 	}
 
