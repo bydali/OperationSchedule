@@ -2,6 +2,7 @@ package schedule.skeleton;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -120,7 +121,7 @@ public class MainController implements Initializable {
 			List<SimpleStringProperty> rowData = ((List<SimpleStringProperty>) t.getTableView().getItems()
 					.get(t.getTablePosition().getRow()));
 			String oldTrainNum = rowData.get(0).getValue();
-			rowData.set(0, new SimpleStringProperty(t.getNewValue()));
+//			rowData.set(0, new SimpleStringProperty(t.getNewValue()));
 		});
 
 		trainStateView.getColumns().add(col0);
@@ -143,7 +144,7 @@ public class MainController implements Initializable {
 				String oldTrainNum = rowData.get(0).getValue();
 				String oldInTime = rowData.get(col_in_idx).getValue();
 				String newInTime = t.getNewValue();
-				rowData.set(col_in_idx, new SimpleStringProperty(newInTime));
+//				rowData.set(col_in_idx, new SimpleStringProperty(newInTime));
 
 				refresh(oldTrainNum, oldInTime, newInTime, "接车");
 			});
@@ -158,7 +159,7 @@ public class MainController implements Initializable {
 				String oldTrainNum = rowData.get(0).getValue();
 				String oldOutTime = rowData.get(col_out_idx).getValue();
 				String newOutTime = t.getNewValue();
-				rowData.set(col_out_idx, new SimpleStringProperty(newOutTime));
+//				rowData.set(col_out_idx, new SimpleStringProperty(newOutTime));
 
 				refresh(oldTrainNum, oldOutTime, newOutTime, "发车");
 			});
@@ -173,9 +174,42 @@ public class MainController implements Initializable {
 
 	}
 
-	private void refresh(String oldTrainNum, String oldTime, String newTime, String inOrOut) {
-		timeTableVM.updateTrainState(oldTrainNum, oldTime, newTime, inOrOut);
-		timeTableVM.timeTable.generateAllIOTask();
-		mapController.refreshMap(timeTableVM);
+	public void refresh(String oldTrainNum, String oldTime, String newTime, String inOrOut) {
+		if (!oldTime.equals(newTime)) {
+			for (List<SimpleStringProperty> props : timeTableVM.fullTaskVMList) {
+				if (props.get(0).getValue().equals(oldTrainNum)) {
+					boolean find = false;
+					int gapTime = 0;
+					for (SimpleStringProperty ssp : props) {
+						if (ssp.getValue().equals(oldTrainNum)) {
+							continue;
+						} else if ((!find) && ssp.getValue().equals(oldTime)) {
+							ssp.set(newTime);
+
+							LocalTime old = LocalTime.of(Integer.valueOf(oldTime.split(":")[0]),
+									Integer.valueOf(oldTime.split(":")[1]), Integer.valueOf(oldTime.split(":")[2]));
+							LocalTime new_ = LocalTime.of(Integer.valueOf(newTime.split(":")[0]),
+									Integer.valueOf(newTime.split(":")[1]), Integer.valueOf(newTime.split(":")[2]));
+
+							gapTime = new_.getHour() * 3600 + new_.getMinute() * 60 + new_.getSecond()
+									- old.getHour() * 3600 - old.getMinute() * 60 - old.getSecond();
+							find = true;
+						} else if (!ssp.getValue().equals("")) {
+							LocalTime old = LocalTime.of(Integer.valueOf(ssp.getValue().split(":")[0]),
+									Integer.valueOf(ssp.getValue().split(":")[1]),
+									Integer.valueOf(ssp.getValue().split(":")[2]));
+							LocalTime new_ = old.plusSeconds(gapTime);
+							ssp.set(String.format("%tT", new_));
+						}
+					}
+					break;
+				}
+			}
+			trainStateView.setItems(timeTableVM.fullTaskVMList);
+
+			timeTableVM.updateTrainState(oldTrainNum, oldTime, newTime, inOrOut);
+			timeTableVM.timeTable.generateAllIOTask();
+			mapController.refreshMap(timeTableVM);
+		}
 	}
 }

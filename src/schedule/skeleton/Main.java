@@ -3,6 +3,7 @@ package schedule.skeleton;
 import java.io.IOException;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -10,6 +11,7 @@ import javafx.event.EventHandler;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 import schedule.station.FoldHeadController;
 import schedule.viewmodel.TimeTableVM;
 import javafx.scene.Cursor;
@@ -45,24 +47,31 @@ public class Main extends Application {
 	private double MIN_WIDTH = 400.00;
 	private double MIN_HEIGHT = 300.00;
 	private double xOffset = 0, yOffset = 0;// 自定义dialog移动横纵坐标
+	
+	public static FXMLLoader loader;
 
 	@Override
 	public void start(Stage primaryStage) {
 		try {
 //			primaryStage.initStyle(StageStyle.TRANSPARENT);
 
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
+		    loader = new FXMLLoader(getClass().getResource("Main.fxml"));
 			BorderPane root = (BorderPane) loader.load();
 
 			setData(loader.getController());
 
 //			Scene scene = new Scene(setCustomWindow(primaryStage, root), 1680, 1050);
-			Scene scene = new Scene(root, 1680, 1050);
+		    Scene scene = new Scene(root, 1680, 1050);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("车载列车运行图可视化");
 			primaryStage.getIcons().add(new Image(
 	                getClass().getResourceAsStream("app_icon.PNG")));
+			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>(){
+	            public void handle(WindowEvent event) {
+	                Platform.exit();
+	            }
+	        });
 			primaryStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();

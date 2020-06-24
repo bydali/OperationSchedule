@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import javafx.scene.canvas.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -9,97 +10,40 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.Group?>
 
-<GridPane
-	xmlns="http://javafx.com/javafx/8"
-	xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="schedule.skeleton.OperateChartController">
+<GridPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="schedule.skeleton.OperateChartController">
 	<columnConstraints>
-		<ColumnConstraints
-			hgrow="SOMETIMES"
-			maxWidth="170.0"
-			minWidth="170.0"
-			prefWidth="170.0" />
-		<ColumnConstraints
-			hgrow="SOMETIMES"
-			maxWidth="1.7976931348623157E308"
-			minWidth="10.0"
-			prefWidth="1093.0" />
+		<ColumnConstraints hgrow="SOMETIMES" maxWidth="230.0" minWidth="230.0" prefWidth="230.0" />
+		<ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="1181.0" />
 	</columnConstraints>
 	<rowConstraints>
-		<RowConstraints
-			maxHeight="40.0"
-			minHeight="40.0"
-			prefHeight="40.0"
-			vgrow="SOMETIMES" />
-		<RowConstraints
-			maxHeight="1.7976931348623157E308"
-			minHeight="1.0"
-			prefHeight="696.0"
-			vgrow="SOMETIMES" />
-		<RowConstraints
-			maxHeight="21.0"
-			minHeight="21.0"
-			prefHeight="21.0"
-			vgrow="SOMETIMES" />
+		<RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+		<RowConstraints maxHeight="1.7976931348623157E308" minHeight="1.0" prefHeight="696.0" vgrow="SOMETIMES" />
+		<RowConstraints maxHeight="21.0" minHeight="21.0" prefHeight="21.0" vgrow="SOMETIMES" />
 	</rowConstraints>
 	<children>
-		<Label
-			alignment="CENTER"
-			text="作业大表"
-			GridPane.halignment="CENTER" />
-		<ScrollPane
-			fx:id="operateSp"
-			hbarPolicy="NEVER"
-			prefHeight="200.0"
-			prefWidth="200.0"
-			vbarPolicy="NEVER"
-			GridPane.columnIndex="1"
-			GridPane.rowIndex="1">
+		<Label alignment="CENTER" text="作业大表" GridPane.halignment="CENTER" />
+		<ScrollPane fx:id="operateSp" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" vbarPolicy="NEVER" GridPane.columnIndex="1" GridPane.rowIndex="1">
 			<content>
 				<Group fx:id="operateGroup">
-					<VBox fx:id="operateVb" />
+   <children>
+   					<VBox fx:id="operateVb" />
+   </children>
 				</Group>
 			</content>
 		</ScrollPane>
-		<ScrollPane
-			fx:id="stationSp"
-			hbarPolicy="NEVER"
-			prefHeight="170.0"
-			prefWidth="170.0"
-			vbarPolicy="NEVER"
-			GridPane.rowIndex="1">
+		<ScrollPane fx:id="stationSp" hbarPolicy="NEVER" vbarPolicy="NEVER" GridPane.rowIndex="1">
 			<content>
-				<VBox
-					fx:id="headsVb"
-					prefWidth="170.0" />
+				<VBox fx:id="headsVb" prefWidth="170.0" />
 			</content>
 		</ScrollPane>
-		<ScrollPane
-			fx:id="timeSp"
-			hbarPolicy="NEVER"
-			prefHeight="40.0"
-			prefWidth="200.0"
-			vbarPolicy="NEVER"
-			GridPane.columnIndex="1">
+		<ScrollPane fx:id="timeSp" hbarPolicy="NEVER" prefHeight="40.0" prefWidth="200.0" vbarPolicy="NEVER" GridPane.columnIndex="1">
 			<content>
-				<AnchorPane
-					fx:id="timeAp"
-					prefHeight="40.0" />
+				<AnchorPane fx:id="timeAp" prefHeight="40.0" />
 			</content>
 		</ScrollPane>
-		<ScrollPane
-			fx:id="sp"
-			maxHeight="-Infinity"
-			minHeight="-Infinity"
-			prefHeight="16.0"
-			prefWidth="1093.0"
-			vbarPolicy="NEVER"
-			GridPane.columnIndex="1"
-			GridPane.rowIndex="2">
+		<ScrollPane fx:id="sp" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="16.0" prefWidth="1093.0" vbarPolicy="NEVER" GridPane.columnIndex="1" GridPane.rowIndex="2">
 			<content>
-				<AnchorPane
-					fx:id="ap"
-					prefHeight="21.0" />
+				<AnchorPane fx:id="ap" prefHeight="21.0" />
 			</content>
 		</ScrollPane>
 	</children>

@@ -26,9 +26,9 @@ public class TrainState {
 	}
 
 	public TrainState(List<Object> props) {
-		idx = (int) props.get(0);
+		idx = Integer.parseInt(props.get(0).toString());
 		trainNum = props.get(1).toString();
-		String[] timeInfo = props.get(2).toString().split(":");
+		String[] timeInfo = props.get(2).toString().split("  ")[1].split(":");
 		time = LocalTime.of(Integer.parseInt(timeInfo[0]), Integer.parseInt(timeInfo[1]),
 				Integer.parseInt(timeInfo[2]));
 		stationName = props.get(3).toString();

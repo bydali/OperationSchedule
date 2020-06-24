@@ -38,8 +38,8 @@ public class FoldHeadController implements Initializable {
 
 		ap.setPrefHeight(upHeight + bottomHeight);
 
-		c0.setCenterY(upHeight);
-		c1.setCenterY(upHeight);
+		c0.setCenterY(upHeight + 4);
+		c1.setCenterY(upHeight + 4);
 		this.stationName.setLayoutY(upHeight - 8);
 
 		c0.setCenterX(15);

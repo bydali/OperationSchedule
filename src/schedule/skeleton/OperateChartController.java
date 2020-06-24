@@ -117,7 +117,7 @@ public class OperateChartController implements Initializable {
 
 	private void drawAllTrainEdgeTask(TimeTableVM timeTableVM) {
 		// TODO Auto-generated method stub
-		polylineStatue = new HashedMap<>();
+		polylineStatue = new HashedMap<>(); 
 		for (String key : timeTableVM.timeTable.allTrainPointTask.keySet()) {
 			// 画车次任务
 			Polyline polyline = new Polyline();

@@ -18,7 +18,7 @@ import schedule.model.TimeTable;
 public class ReadFromLocal {
 
 	// 获取指定行的文件路径
-	private static String getPath(int rowNum) throws IOException {
+	public static String getPath(int rowNum) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("cfg.txt"), "UTF-8"));
 		String line = null;
 		int num = 1;

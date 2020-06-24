@@ -16,11 +16,11 @@ import schedule.model.TrainState;
 
 public class TimeTableVM {
 
-	public TimeTable timeTable;
+	public static TimeTable timeTable;
 
 	public static List<StationVM> allStationVM;
 
-	public ObservableList<List<SimpleStringProperty>> fullTaskVMList;
+	public static ObservableList<List<SimpleStringProperty>> fullTaskVMList;
 
 	public TimeTableVM() throws IOException {
 		// TODO Auto-generated constructor stub
@@ -43,8 +43,10 @@ public class TimeTableVM {
 			List<SimpleStringProperty> lst = new ArrayList<>();
 			lst.add(new SimpleStringProperty(fullTask.trainNum));
 			for (StationIO stationIO : fullTask.allStationIO) {
-				lst.add(new SimpleStringProperty(stationIO.inTime == null ? "" : stationIO.inTime.toString()));
-				lst.add(new SimpleStringProperty(stationIO.outTime == null ? "" : stationIO.outTime.toString()));
+				lst.add(new SimpleStringProperty(
+						stationIO.inTime == null ? "" : String.format("%tT", stationIO.inTime)));
+				lst.add(new SimpleStringProperty(
+						stationIO.outTime == null ? "" : String.format("%tT", stationIO.outTime)));
 			}
 			fullTaskVMList.add(lst);
 		}
@@ -53,5 +55,27 @@ public class TimeTableVM {
 	public void updateTrainState(String oldTrainNum, String oldTime, String newTime, String inOrOut) {
 		// TODO Auto-generated method stub
 		timeTable.updateTrainState(oldTrainNum, oldTime, newTime, inOrOut);
+	}
+
+	public static String searchTrainState(String trainNum, String station, String inOrOut) {
+		for (FullTask fullTask : timeTable.allTrainFullTask) {
+			if (fullTask.trainNum.equals(trainNum)) {
+				for (StationIO stationIO : fullTask.allStationIO) {
+					if (stationIO.stationName.equals(station)) {
+						switch (inOrOut) {
+						case "接车":
+							return String.format("%tT", stationIO.inTime);
+						case "发车":
+							return String.format("%tT", stationIO.outTime);
+						default:
+							return "";
+						}
+					}
+				}
+				break;
+			}
+		}
+
+		return "";
 	}
 }
