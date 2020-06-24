@@ -85,10 +85,14 @@ public class ReportTimeController implements Initializable {
 						@Override
 						public void run() {
 							try {
-								System.out.println(ReportTimeCallCpp.myadd(1, 2));
+//								System.out.println(ReportTimeCallCpp.myadd(1, 2));
+
 								Platform.runLater(() -> {
-									((MainController)(Main.loader.getController())).refresh(trainNum.getText().split(" ")[0], oldTime, reportTime.getText(), inOrOut.getValue());
-							    });			
+									((MainController) (Main.loader.getController())).refresh(
+											trainNum.getText().split(" ")[0], oldTime, reportTime.getText(),
+											inOrOut.getValue());
+									oldTime = reportTime.getText();
+								});
 							} catch (Exception e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -110,7 +114,7 @@ public class ReportTimeController implements Initializable {
 					String time = TimeTableVM.searchTrainState(trainNum.getText().split(" ")[0], stationName.getValue(),
 							inOrOut.getValue());
 					reportTime.setText(time);
-					oldTime=time;
+					oldTime = time;
 				}
 			}
 		});
@@ -118,11 +122,11 @@ public class ReportTimeController implements Initializable {
 		inOrOut.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
 			@Override
 			public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
-				if (stationName .getValue() != null) {
+				if (stationName.getValue() != null) {
 					String time = TimeTableVM.searchTrainState(trainNum.getText().split(" ")[0], stationName.getValue(),
 							inOrOut.getValue());
 					reportTime.setText(time);
-					oldTime=time;
+					oldTime = time;
 				}
 			}
 		});
