@@ -54,6 +54,9 @@ public class MainController implements Initializable {
 
 	@FXML
 	private TableView<List<SimpleStringProperty>> trainStateView;
+	
+	@FXML
+	private MenuItem reportTime;
 
 	private TimeTableVM timeTableVM;
 	private OperateChartController mapController;
@@ -61,22 +64,7 @@ public class MainController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
-
-	}
-
-	public void setData(TimeTableVM timeTableVM) throws IOException {
-		this.timeTableVM = timeTableVM;
-
-		// 加载作业大表控件
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("OperateChart.fxml"));
-		GridPane gp = (GridPane) loader.load();
-		OperateChartController controller = loader.getController();
-		mapController = controller;
-		controller.setData(timeTableVM);
-		operateTab.setContent(gp);
-
-		MenuItem mI = new MenuItem("实时报点");
-		mI.setOnAction(new EventHandler<ActionEvent>() {
+		reportTime.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				List<SimpleStringProperty> selectItemList = trainStateView.getSelectionModel().getSelectedItem();
 
@@ -103,15 +91,56 @@ public class MainController implements Initializable {
 				}
 			}
 		});
+	}
 
-		ContextMenu cM = new ContextMenu();
-		cM.getItems().add(mI);
-		trainStateView.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
-			@Override
-			public void handle(ContextMenuEvent event) {
-				cM.show(trainStateView, event.getScreenX(), event.getScreenY());
-			}
-		});
+	public void setData(TimeTableVM timeTableVM) throws IOException {
+		this.timeTableVM = timeTableVM;
+
+		// 加载作业大表控件
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("OperateChart.fxml"));
+		GridPane gp = (GridPane) loader.load();
+		OperateChartController controller = loader.getController();
+		mapController = controller;
+		controller.setData(timeTableVM);
+		operateTab.setContent(gp);
+
+//		MenuItem mI = new MenuItem("实时报点");
+//		mI.setOnAction(new EventHandler<ActionEvent>() {
+//			public void handle(ActionEvent event) {
+//				List<SimpleStringProperty> selectItemList = trainStateView.getSelectionModel().getSelectedItem();
+//
+//				// 打开报点的stage
+//				Stage reportTime = new Stage();
+//				FXMLLoader loader = new FXMLLoader(getClass().getResource("ReportTime.fxml"));
+//				AnchorPane root;
+//				try {
+//					root = (AnchorPane) loader.load();
+//					Scene reportScene = new Scene(root, 500, 200);
+//					reportScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+//					reportTime.setScene(reportScene);
+//					reportTime.setResizable(false);
+//					reportTime.setTitle("列车报点");
+//					reportTime.getIcons().add(new Image(getClass().getResourceAsStream("app_icon.PNG")));
+//					// reportTime.initOwner(stage);
+//					// reportTime.initModality(Modality.WINDOW_MODAL);
+//					ReportTimeController reportTimeController = loader.getController();
+//					reportTimeController.setData(trainStateView.getSelectionModel().getSelectedItem());
+//					reportTime.show();
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//
+//		ContextMenu cM = new ContextMenu();
+//		cM.getItems().add(mI);
+//		trainStateView.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
+//			@Override
+//			public void handle(ContextMenuEvent event) {
+//				cM.show(trainStateView, event.getScreenX(), event.getScreenY());
+//			}
+//		});
 
 		TableColumn<List<SimpleStringProperty>, String> col0 = new TableColumn<>("车次");
 		col0.setMinWidth(100);

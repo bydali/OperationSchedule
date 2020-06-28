@@ -70,6 +70,7 @@
 				</Menu>
 				<Menu mnemonicParsing="false" text="列车管理">
 					<items>
+                  <MenuItem fx:id="reportTime" mnemonicParsing="false" text="实时报点" />
 						<MenuItem mnemonicParsing="false" text="当班记事" />
 						<SeparatorMenuItem mnemonicParsing="false" />
 						<MenuItem mnemonicParsing="false" text="乘务管理窗口" />
