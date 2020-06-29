@@ -1,5 +1,6 @@
 package schedule.model;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
@@ -10,24 +11,18 @@ public class TrainState {
 
 	public int idx;
 	public String trainNum;
+	public LocalDate date;
 	public LocalTime time;
 	public String stationName;
 	public String track;
 	public String type;
 
-	public TrainState(int idx, String trainNum, LocalTime time, String stationName, String track, String type) {
-		// TODO Auto-generated constructor stub
-		this.idx = idx;
-		this.trainNum = trainNum;
-		this.time = time;
-		this.stationName = stationName;
-		this.track = track;
-		this.type = type;
-	}
-
 	public TrainState(List<Object> props) {
 		idx = Integer.parseInt(props.get(0).toString());
 		trainNum = props.get(1).toString();
+		String[] dateInfo = props.get(2).toString().split("  ")[0].split("-");
+		date = LocalDate.of(Integer.parseInt(dateInfo[0]), Integer.parseInt(dateInfo[1]),
+				Integer.parseInt(dateInfo[2]));
 		String[] timeInfo = props.get(2).toString().split("  ")[1].split(":");
 		time = LocalTime.of(Integer.parseInt(timeInfo[0]), Integer.parseInt(timeInfo[1]),
 				Integer.parseInt(timeInfo[2]));

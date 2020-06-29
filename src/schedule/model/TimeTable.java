@@ -182,7 +182,7 @@ public class TimeTable {
 	}
 
 	public void generateAllIOTask() {
-		// 按车次整理任务，每趟车次的路径放在字典中
+		// 以车次为唯一键，将每趟车次的路径放在字典中
 		allTrainPointTask = new HashMap<String, List<TrainState>>();
 		for (TrainState trainState : allTrainState) {
 			if (!allTrainPointTask.containsKey(trainState.trainNum)) {
@@ -214,12 +214,15 @@ public class TimeTable {
 					if (allTrainPointTask.get(key).get(i).stationName.equals(allStationIO.get(j).stationName)) {
 						if (i == 0) {
 							allStationIO.get(j).outTime = allTrainPointTask.get(key).get(i).time;
+							allStationIO.get(j).outDate = allTrainPointTask.get(key).get(i).date;
 							break;
 						}
 						if (allStationIO.get(j).inTime == null) {
 							allStationIO.get(j).inTime = allTrainPointTask.get(key).get(i).time;
+							allStationIO.get(j).inDate = allTrainPointTask.get(key).get(i).date;
 						} else {
 							allStationIO.get(j).outTime = allTrainPointTask.get(key).get(i).time;
+							allStationIO.get(j).outDate = allTrainPointTask.get(key).get(i).date;
 						}
 						break;
 					}

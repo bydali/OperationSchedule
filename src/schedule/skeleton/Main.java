@@ -1,6 +1,7 @@
 package schedule.skeleton;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -54,7 +55,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 //			primaryStage.initStyle(StageStyle.TRANSPARENT);
-
+			
 		    loader = new FXMLLoader(getClass().getResource("Main.fxml"));
 			BorderPane root = (BorderPane) loader.load();
 

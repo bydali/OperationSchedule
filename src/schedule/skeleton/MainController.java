@@ -57,6 +57,9 @@ public class MainController implements Initializable {
 	
 	@FXML
 	private MenuItem reportTime;
+	
+	@FXML
+	private MenuItem trainStateUpdate;
 
 	private TimeTableVM timeTableVM;
 	private OperateChartController mapController;
@@ -66,8 +69,6 @@ public class MainController implements Initializable {
 		// TODO Auto-generated method stub
 		reportTime.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				List<SimpleStringProperty> selectItemList = trainStateView.getSelectionModel().getSelectedItem();
-
 				// 打开报点的stage
 				Stage reportTime = new Stage();
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("ReportTime.fxml"));
@@ -85,6 +86,29 @@ public class MainController implements Initializable {
 					ReportTimeController reportTimeController = loader.getController();
 					reportTimeController.setData(trainStateView.getSelectionModel().getSelectedItem());
 					reportTime.show();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		trainStateUpdate.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				Stage updateTime = new Stage();
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("UpdateTime.fxml"));
+				BorderPane root;
+				try {
+					root = (BorderPane) loader.load();
+					Scene updateScene = new Scene(root);
+					updateScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+					updateTime.setScene(updateScene);
+					updateTime.setResizable(false);
+					updateTime.setTitle("列车运行状态更新");
+					updateTime.getIcons().add(new Image(getClass().getResourceAsStream("app_icon.PNG")));
+					UpdateTimeController updateTimeController = loader.getController();
+					updateTime.show();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

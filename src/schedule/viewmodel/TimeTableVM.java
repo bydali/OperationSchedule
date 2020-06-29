@@ -64,9 +64,9 @@ public class TimeTableVM {
 					if (stationIO.stationName.equals(station)) {
 						switch (inOrOut) {
 						case "接车":
-							return String.format("%tT", stationIO.inTime);
+							return stationIO.inDate.toString() + " " + String.format("%tT", stationIO.inTime);
 						case "发车":
-							return String.format("%tT", stationIO.outTime);
+							return stationIO.outDate.toString() + " " + String.format("%tT", stationIO.outTime);
 						default:
 							return "";
 						}

@@ -8,186 +8,425 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.chart.XYChart?>
 
-<BorderPane prefHeight="759.0" prefWidth="1278.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="schedule.skeleton.MainController">
+<BorderPane
+	prefHeight="759.0"
+	prefWidth="1278.0"
+	xmlns="http://javafx.com/javafx/8"
+	xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="schedule.skeleton.MainController">
 	<top>
 		<MenuBar BorderPane.alignment="CENTER">
 			<menus>
-				<Menu mnemonicParsing="false" text="系统登录">
+				<Menu
+					mnemonicParsing="false"
+					text="系统登录">
 					<items>
-						<MenuItem mnemonicParsing="false" text="换班登录" />
-						<MenuItem mnemonicParsing="false" text="交班存图" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="换班登录" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="交班存图" />
 						<SeparatorMenuItem mnemonicParsing="false" />
-						<MenuItem mnemonicParsing="false" text="打印预览" />
-						<MenuItem mnemonicParsing="false" text="打印" />
-						<MenuItem mnemonicParsing="false" text="时间段打印" />
-						<MenuItem mnemonicParsing="false" text="保存运行线" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="打印预览" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="打印" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="时间段打印" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="保存运行线" />
 						<SeparatorMenuItem mnemonicParsing="false" />
-						<MenuItem mnemonicParsing="false" text="退出系统" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="退出系统" />
 					</items>
 				</Menu>
-				<Menu mnemonicParsing="false" text="参数设置">
+				<Menu
+					mnemonicParsing="false"
+					text="参数设置">
 					<items>
-						<MenuItem mnemonicParsing="false" text="区间运行时间" />
-						<MenuItem mnemonicParsing="false" text="间隔参数" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="区间运行时间" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="间隔参数" />
 					</items>
 				</Menu>
-				<Menu mnemonicParsing="false" text="绘制运行符号">
+				<Menu
+					mnemonicParsing="false"
+					text="绘制运行符号">
 					<items>
-						<MenuItem mnemonicParsing="false" text="列车运行线" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="列车运行线" />
 						<SeparatorMenuItem mnemonicParsing="false" />
-						<MenuItem mnemonicParsing="false" text="区间封锁" />
-						<MenuItem mnemonicParsing="false" text="区间慢行" />
-						<MenuItem mnemonicParsing="false" text="车站封锁" />
-						<MenuItem mnemonicParsing="false" text="车站慢行" />
-						<MenuItem mnemonicParsing="false" text="电网检修" />
-						<MenuItem mnemonicParsing="false" text="图表记载" />
-						<MenuItem mnemonicParsing="false" text="区间作业" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="区间封锁" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="区间慢行" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="车站封锁" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="车站慢行" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="电网检修" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="图表记载" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="区间作业" />
 						<SeparatorMenuItem mnemonicParsing="false" />
-						<MenuItem mnemonicParsing="false" text="取消绘制" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="取消绘制" />
 					</items>
 				</Menu>
-				<Menu mnemonicParsing="false" text="阶段计划">
+				<Menu
+					mnemonicParsing="false"
+					text="阶段计划">
 					<items>
-						<MenuItem mnemonicParsing="false" text="批量(分界口接入)计划(F2)" />
-						<MenuItem mnemonicParsing="false" text="图定计划" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="批量(分界口接入)计划(F2)" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="图定计划" />
 						<SeparatorMenuItem mnemonicParsing="false" />
-						<MenuItem mnemonicParsing="false" text="删除运行线" />
-						<MenuItem mnemonicParsing="false" text="恢复删除" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="删除运行线" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="恢复删除" />
 						<SeparatorMenuItem mnemonicParsing="false" />
-						<MenuItem mnemonicParsing="false" text="批量删除计划线" />
-						<MenuItem mnemonicParsing="false" text="恢复批量删除" />
-						<MenuItem mnemonicParsing="false" text="删除全部计划停运线" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="批量删除计划线" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="恢复批量删除" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="删除全部计划停运线" />
 						<SeparatorMenuItem mnemonicParsing="false" />
-						<MenuItem mnemonicParsing="false" text="下达计划" />
-						<MenuItem mnemonicParsing="false" text="定时下达计划设置" />
-						<MenuItem mnemonicParsing="false" text="申请邻台计划" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="下达计划" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="定时下达计划设置" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="申请邻台计划" />
 						<SeparatorMenuItem mnemonicParsing="false" />
-						<MenuItem mnemonicParsing="false" text="批量选择计划线" />
-						<MenuItem mnemonicParsing="false" text="批量移动计划线(一小时)" />
-						<MenuItem mnemonicParsing="false" text="按间隔分隔批量线条" />
-						<MenuItem mnemonicParsing="false" text="更改通过/到开" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="批量选择计划线" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="批量移动计划线(一小时)" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="按间隔分隔批量线条" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="更改通过/到开" />
 					</items>
 				</Menu>
-				<Menu mnemonicParsing="false" text="列车管理">
+				<Menu
+					mnemonicParsing="false"
+					text="列车管理">
 					<items>
-                  <MenuItem fx:id="reportTime" mnemonicParsing="false" text="实时报点" />
-						<MenuItem mnemonicParsing="false" text="当班记事" />
+						<MenuItem
+							fx:id="reportTime"
+							mnemonicParsing="false"
+							text="实时报点" />
+						<MenuItem
+							fx:id="trainStateUpdate"
+							mnemonicParsing="false"
+							text="列车运行状态更新" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="当班记事" />
 						<SeparatorMenuItem mnemonicParsing="false" />
-						<MenuItem mnemonicParsing="false" text="乘务管理窗口" />
-						<MenuItem mnemonicParsing="false" text="车站现在车" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="乘务管理窗口" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="车站现在车" />
 						<SeparatorMenuItem mnemonicParsing="false" />
-						<MenuItem mnemonicParsing="false" text="乘务机务叫班" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="乘务机务叫班" />
 						<SeparatorMenuItem mnemonicParsing="false" />
-						<MenuItem mnemonicParsing="false" text="列车甩挂管理" />
-						<MenuItem mnemonicParsing="false" text="计划台下达甩挂信息" />
-						<MenuItem mnemonicParsing="false" text="交接车数统计" />
-						<MenuItem mnemonicParsing="false" text="调度命令" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="列车甩挂管理" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="计划台下达甩挂信息" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="交接车数统计" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="调度命令" />
 					</items>
 				</Menu>
-				<Menu mnemonicParsing="false" text="显示选项">
+				<Menu
+					mnemonicParsing="false"
+					text="显示选项">
 					<items>
-						<CheckMenuItem mnemonicParsing="false" text="显示报点窗口" />
-						<MenuItem mnemonicParsing="false" text="列车确报查询" />
+						<CheckMenuItem
+							mnemonicParsing="false"
+							text="显示报点窗口" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="列车确报查询" />
 						<SeparatorMenuItem mnemonicParsing="false" />
-						<CheckMenuItem mnemonicParsing="false" text="显示正晚点" />
-						<CheckMenuItem mnemonicParsing="false" text="显示基本图" />
-						<CheckMenuItem mnemonicParsing="false" text="显示区间分析" />
-						<CheckMenuItem mnemonicParsing="false" text="显示运行时分分析" />
-						<CheckMenuItem mnemonicParsing="false" text="始终显示换方向车次" />
-						<CheckMenuItem mnemonicParsing="false" text="显示车底交路" />
-						<CheckMenuItem mnemonicParsing="false" text="显示叫班信息" />
-						<CheckMenuItem mnemonicParsing="false" text="显示调度命令生成信息" />
-						<CheckMenuItem mnemonicParsing="false" text="显示运缓信息" />
-						<CheckMenuItem mnemonicParsing="false" text="显示计划错误报警信息" />
-						<CheckMenuItem mnemonicParsing="false" text="显示选中列车节点Tip" />
-						<CheckMenuItem mnemonicParsing="false" text="显示营业标志" />
-						<CheckMenuItem mnemonicParsing="false" text="显示细线条" />
-						<CheckMenuItem mnemonicParsing="false" text="显示进路开放标志" />
-						<CheckMenuItem mnemonicParsing="false" text="报点后自动移动后续车站运行点" />
-						<CheckMenuItem mnemonicParsing="false" text="叫班时按到达点叫班" />
+						<CheckMenuItem
+							mnemonicParsing="false"
+							text="显示正晚点" />
+						<CheckMenuItem
+							mnemonicParsing="false"
+							text="显示基本图" />
+						<CheckMenuItem
+							mnemonicParsing="false"
+							text="显示区间分析" />
+						<CheckMenuItem
+							mnemonicParsing="false"
+							text="显示运行时分分析" />
+						<CheckMenuItem
+							mnemonicParsing="false"
+							text="始终显示换方向车次" />
+						<CheckMenuItem
+							mnemonicParsing="false"
+							text="显示车底交路" />
+						<CheckMenuItem
+							mnemonicParsing="false"
+							text="显示叫班信息" />
+						<CheckMenuItem
+							mnemonicParsing="false"
+							text="显示调度命令生成信息" />
+						<CheckMenuItem
+							mnemonicParsing="false"
+							text="显示运缓信息" />
+						<CheckMenuItem
+							mnemonicParsing="false"
+							text="显示计划错误报警信息" />
+						<CheckMenuItem
+							mnemonicParsing="false"
+							text="显示选中列车节点Tip" />
+						<CheckMenuItem
+							mnemonicParsing="false"
+							text="显示营业标志" />
+						<CheckMenuItem
+							mnemonicParsing="false"
+							text="显示细线条" />
+						<CheckMenuItem
+							mnemonicParsing="false"
+							text="显示进路开放标志" />
+						<CheckMenuItem
+							mnemonicParsing="false"
+							text="报点后自动移动后续车站运行点" />
+						<CheckMenuItem
+							mnemonicParsing="false"
+							text="叫班时按到达点叫班" />
 					</items>
 				</Menu>
-				<Menu mnemonicParsing="false" text="培训方案管理">
+				<Menu
+					mnemonicParsing="false"
+					text="培训方案管理">
 					<items>
-						<MenuItem mnemonicParsing="false" text="初始培训交班现场" />
-						<MenuItem mnemonicParsing="false" text="校验台初始化方案" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="初始培训交班现场" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="校验台初始化方案" />
 						<SeparatorMenuItem mnemonicParsing="false" />
-						<MenuItem mnemonicParsing="false" text="列调操作完成" />
-						<MenuItem mnemonicParsing="false" text="开始录制" />
-						<MenuItem mnemonicParsing="false" text="结束录制" />
-						<MenuItem mnemonicParsing="false" text="时钟同步" />
-						<MenuItem mnemonicParsing="false" text="查看试题题目" />
-						<MenuItem mnemonicParsing="false" text="查看记录档案" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="列调操作完成" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="开始录制" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="结束录制" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="时钟同步" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="查看试题题目" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="查看记录档案" />
 					</items>
 				</Menu>
-				<Menu mnemonicParsing="false" text="帮助">
+				<Menu
+					mnemonicParsing="false"
+					text="帮助">
 					<items>
-						<MenuItem mnemonicParsing="false" text="目录和索引" />
-						<MenuItem mnemonicParsing="false" text="每日提示" />
-						<MenuItem mnemonicParsing="false" text="视频帮助" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="目录和索引" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="每日提示" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="视频帮助" />
 						<SeparatorMenuItem mnemonicParsing="false" />
-						<MenuItem mnemonicParsing="false" text="关于本系统" />
+						<MenuItem
+							mnemonicParsing="false"
+							text="关于本系统" />
 					</items>
 				</Menu>
 			</menus>
 		</MenuBar>
 	</top>
 	<bottom>
-		<GridPane prefHeight="40.0" prefWidth="1278.0" BorderPane.alignment="CENTER">
+		<GridPane
+			prefHeight="40.0"
+			prefWidth="1278.0"
+			BorderPane.alignment="CENTER">
 			<columnConstraints>
-				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+				<ColumnConstraints
+					hgrow="SOMETIMES"
+					minWidth="10.0"
+					prefWidth="100.0" />
+				<ColumnConstraints
+					hgrow="SOMETIMES"
+					minWidth="10.0"
+					prefWidth="100.0" />
 			</columnConstraints>
 			<rowConstraints>
-				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+				<RowConstraints
+					minHeight="10.0"
+					prefHeight="30.0"
+					vgrow="SOMETIMES" />
 			</rowConstraints>
 			<children>
-				<HBox alignment="CENTER_LEFT" prefHeight="90.0" prefWidth="639.0">
+				<HBox
+					alignment="CENTER_LEFT"
+					prefHeight="90.0"
+					prefWidth="639.0">
 					<children>
-						<Label centerShape="true" text="广铁调度" />
-						<Separator orientation="VERTICAL" prefHeight="200.0" />
+						<Label
+							centerShape="true"
+							text="广铁调度" />
+						<Separator
+							orientation="VERTICAL"
+							prefHeight="200.0" />
 						<Label text="14:30" />
-						<Separator orientation="VERTICAL" prefHeight="200.0" />
+						<Separator
+							orientation="VERTICAL"
+							prefHeight="200.0" />
 						<Label text="G101" />
-						<Separator orientation="VERTICAL" prefHeight="200.0" />
-						<Label alignment="CENTER" text="G101" />
+						<Separator
+							orientation="VERTICAL"
+							prefHeight="200.0" />
+						<Label
+							alignment="CENTER"
+							text="G101" />
 					</children>
 				</HBox>
-				<HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+				<HBox
+					alignment="CENTER_RIGHT"
+					prefHeight="100.0"
+					prefWidth="200.0"
+					GridPane.columnIndex="1">
 					<children>
-						<Button mnemonicParsing="false" text="放大" />
-						<Button mnemonicParsing="false" text="缩小" />
+						<Button
+							mnemonicParsing="false"
+							text="放大" />
+						<Button
+							mnemonicParsing="false"
+							text="缩小" />
 					</children>
 				</HBox>
 			</children>
 		</GridPane>
 	</bottom>
 	<center>
-		<SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="490.0" prefWidth="908.0" BorderPane.alignment="CENTER">
+		<SplitPane
+			dividerPositions="0.5"
+			orientation="VERTICAL"
+			prefHeight="490.0"
+			prefWidth="908.0"
+			BorderPane.alignment="CENTER">
 			<items>
-				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+				<AnchorPane
+					minHeight="0.0"
+					minWidth="0.0"
+					prefHeight="100.0"
+					prefWidth="160.0">
 					<children>
-						<TabPane layoutX="122.0" layoutY="130.0" prefHeight="200.0" prefWidth="200.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+						<TabPane
+							layoutX="122.0"
+							layoutY="130.0"
+							prefHeight="200.0"
+							prefWidth="200.0"
+							side="LEFT"
+							tabClosingPolicy="UNAVAILABLE"
+							AnchorPane.bottomAnchor="0"
+							AnchorPane.leftAnchor="0"
+							AnchorPane.rightAnchor="0"
+							AnchorPane.topAnchor="0">
 							<tabs>
-								<Tab fx:id="operateTab" closable="false" text="行">
+								<Tab
+									fx:id="operateTab"
+									closable="false"
+									text="行">
 									<content>
 									</content>
 								</Tab>
-								<Tab closable="false" text="日">
+								<Tab
+									closable="false"
+									text="日">
 									<content>
-										<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+										<AnchorPane
+											minHeight="0.0"
+											minWidth="0.0"
+											prefHeight="180.0"
+											prefWidth="200.0" />
 									</content>
 								</Tab>
-								<Tab closable="false" text="施">
+								<Tab
+									closable="false"
+									text="施">
 									<content>
-										<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+										<AnchorPane
+											minHeight="0.0"
+											minWidth="0.0"
+											prefHeight="180.0"
+											prefWidth="200.0" />
 									</content>
 								</Tab>
 							</tabs>
 						</TabPane>
 					</children>
 				</AnchorPane>
-            <TableView fx:id="trainStateView" editable="true" prefHeight="200.0" prefWidth="200.0" />
+				<TableView
+					fx:id="trainStateView"
+					editable="true"
+					prefHeight="200.0"
+					prefWidth="200.0" />
 			</items>
 		</SplitPane>
 	</center>

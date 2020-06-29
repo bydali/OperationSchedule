@@ -6,6 +6,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.URL;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -28,6 +29,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import schedule.io.BigLittleConverter;
 import schedule.io.ReadFromLocal;
 import schedule.model.TimeTable;
 import schedule.viewmodel.StationVM;
@@ -54,6 +56,8 @@ public class ReportTimeController implements Initializable {
 	private TextField reportTime;
 
 	private String oldTime;
+	public static int msgCount = 1;
+	public static int msgCount1 = 1;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -78,82 +82,110 @@ public class ReportTimeController implements Initializable {
 			public void handle(Event event) {
 				// TODO Auto-generated method stub
 				try {
-					String server = ReadFromLocal.getPath(3);
-					String port = ReadFromLocal.getPath(4);
+					String server0 = ReadFromLocal.getPath(3);
+					String port0 = ReadFromLocal.getPath(4);
+					String server1 = ReadFromLocal.getPath(5);
+					String port1 = ReadFromLocal.getPath(6);
+					String server2 = ReadFromLocal.getPath(7);
+					String port2 = ReadFromLocal.getPath(8);
 
 					new Thread(new Runnable() {
 						@Override
 						public void run() {
 							try {
 								// System.out.println(ReportTimeCallCpp.myadd(1, 2));
-								
+
 								DatagramSocket datagramSocket = new DatagramSocket();
 
-								// 以下为数据接口
-								byte[] data0 = toMinByte((char) 0xBE);
-								byte[] data1 = toMinByte((short) 0);
-								byte[] data2 = toMinByte((char) 1);
-								byte[] data3 = toMinByte((char) 3);
-								byte[] data4 = toMinByte((short) 1);
-								byte[] data5 = toMinByte((char) 81);
-								byte[] data6 = toMinByte((char) 3);
-								byte[] data7 = toMinByte((short) 1);
-								byte[] data8 = toMinByte((char) 93);
-								byte[] data9 = toMinByte((short) 2020);
-								byte[] data10 = toMinByte((char) 6);
-								byte[] data11 = toMinByte((char) 28);
-								byte[] data12 = toMinByte((int) 0);
-								byte[] data13 = toMinByte((int) 0);
-								byte[] data14 = toMinByte((char) 0);
-								byte[] data15 = toMinByte((char) 0);
-								byte[] data16 = toMinByte((char) 1);
-								byte[] data17 = toMinByte((short) 1);
-								byte[] data18 = toMinByte((int) 0);
-								byte[] data19 = toMinByte((char) 0);
-								byte[] head = new byte[data0.length + data1.length + data2.length + data3.length
-										+ data4.length + data5.length + data6.length + data7.length + data8.length
-										+ data9.length + data10.length + data11.length + data12.length + data13.length
-										+ data14.length + data15.length + data16.length + data17.length + data18.length
-										+ data19.length];
-								System.arraycopy(data0, 0, head, 0, data0.length);
-								System.arraycopy(data1, 0, head, data0.length, data1.length);
-								System.arraycopy(data2, 0, head, data1.length, data2.length);
-								System.arraycopy(data3, 0, head, data2.length, data3.length);
-								System.arraycopy(data4, 0, head, data3.length, data4.length);
-								System.arraycopy(data5, 0, head, data4.length, data5.length);
-								System.arraycopy(data6, 0, head, data5.length, data6.length);
-								System.arraycopy(data7, 0, head, data6.length, data7.length);
-								System.arraycopy(data8, 0, head, data7.length, data8.length);
-								System.arraycopy(data9, 0, head, data8.length, data9.length);
-								System.arraycopy(data10, 0, head, data9.length, data10.length);
-								System.arraycopy(data11, 0, head, data10.length, data11.length);
-								System.arraycopy(data12, 0, head, data11.length, data12.length);
-								System.arraycopy(data13, 0, head, data12.length, data13.length);
-								System.arraycopy(data14, 0, head, data13.length, data14.length);
-								System.arraycopy(data15, 0, head, data14.length, data15.length);
-								System.arraycopy(data16, 0, head, data15.length, data16.length);
-								System.arraycopy(data17, 0, head, data16.length, data17.length);
-								System.arraycopy(data18, 0, head, data17.length, data18.length);
-								System.arraycopy(data19, 0, head, data18.length, data19.length);
+								// 头
+								byte[] data0 = BigLittleConverter.toMinByte((char) 0xBE);
+								byte[] data1 = BigLittleConverter.toMinByte((short) 0);
+								byte[] data2 = BigLittleConverter.toMinByte((char) 1);
+								byte[] data3 = BigLittleConverter.toMinByte((char) 3);
+								byte[] data4 = BigLittleConverter.toMinByte((short) 1);
+								byte[] data5 = BigLittleConverter.toMinByte((char) 81);
+								byte[] data6 = BigLittleConverter.toMinByte((char) 3);
+								byte[] data7 = BigLittleConverter.toMinByte((short) 1);
+								byte[] data8 = BigLittleConverter.toMinByte((char) 93);
+								byte[] data9 = BigLittleConverter.toMinByte((short) Short.parseShort(oldTime.split(" ")[0].split("-")[0]));
+								byte[] data10 = BigLittleConverter.toMinByte((char) Short.parseShort(oldTime.split(" ")[0].split("-")[1]));
+								byte[] data11 = BigLittleConverter.toMinByte((char) Short.parseShort(oldTime.split(" ")[0].split("-")[2]));
+								byte[] data12 = BigLittleConverter.toMinByte(
+										(int) ((LocalTime.now().getHour() * 60 + LocalTime.now().getMinute()) * 60
+												+ LocalTime.now().getSecond()) * 1000);
+								byte[] data13 = BigLittleConverter.toMinByte((int) msgCount++);
+								byte[] data14 = BigLittleConverter.toMinByte((char) 0);
+								byte[] data15 = BigLittleConverter.toMinByte((char) 0);
+								byte[] data16 = BigLittleConverter.toMinByte((char) 1);
+								byte[] data17 = BigLittleConverter.toMinByte((short) 1);
+								byte[] data18 = BigLittleConverter.toMinByte((int) 0);
+								byte[] data19 = BigLittleConverter.toMinByte((char) 0);
 
-								InetAddress address = InetAddress.getByName(server);
-								DatagramPacket datagramPacket = new DatagramPacket(head, head.length, address,
-										Integer.parseInt(port));
-								datagramSocket.send(datagramPacket);
+								// 信息字1
+								byte[] bh = BigLittleConverter.toMinByte((short) 4259);
+								byte[] cllx = BigLittleConverter.toMinByte((char) 2);
+								byte[] glcbh = BigLittleConverter.toMinByte((char) 1);
+								byte[] by = BigLittleConverter.toMinByte((short) 0);
 
-//								byte[] receBuf = new byte[1024];
-//								DatagramPacket recePacket = new DatagramPacket(receBuf, receBuf.length);
-//								datagramSocket.receive(recePacket);
-//
-//								String receStr = new String(recePacket.getData(), 0, recePacket.getLength());
+								// 包1 站点信息
+								byte[] xh = BigLittleConverter.toMinByte((char) msgCount1++);
+								byte[] jcz = BigLittleConverter.toMinByte((char) 0xAA);
+								byte[] y = BigLittleConverter.toMinByte((char) Integer.parseInt(oldTime.split(" ")[0].split("-")[1]));
+								byte[] n = BigLittleConverter.toMinByte((char) Integer.parseInt(oldTime.split(" ")[0].split("-")[0]));
+								byte[] s = BigLittleConverter.toMinByte((char) Integer.parseInt(oldTime.split(" ")[1].split(":")[0]));
+								byte[] r = BigLittleConverter.toMinByte((char) Integer.parseInt(oldTime.split(" ")[0].split("-")[2]));
+								byte[] m = BigLittleConverter.toMinByte((char) Integer.parseInt(oldTime.split(" ")[1].split(":")[2]));
+								byte[] f = BigLittleConverter.toMinByte((char) Integer.parseInt(oldTime.split(" ")[1].split(":")[1]));
+
+								String strName = stationName.getValue();
+								byte[] name = strName.getBytes();
+								byte[] cd = BigLittleConverter.toMinByte((char) name.length);
+
+								byte[] head = BigLittleConverter.concatBytes(data0, data1, data2, data3, data4, data5, data6, data7, data8,
+										data9, data10, data11, data12, data13, data14, data15, data16, data17, data18,
+										data19, bh, cllx, glcbh, by, xh, jcz, y, n, s, r, m, f, cd, name);
+
+								// 修改长度
+								byte[] totalLen = BigLittleConverter.toMinByte((short) (head.length));
+								if (totalLen.length == 2) {
+									head[1] = totalLen[0];
+									head[2] = totalLen[1];
+								}
+								// 添加校验
+								byte jyh = 0;
+								for (int i = 0; i < head.length; i++) {
+									if (i != 33) {
+										jyh += head[i];
+									}
+								}
+								head[33] = jyh;
+
+								InetAddress address0 = InetAddress.getByName(server0);
+								DatagramPacket datagramPacket0 = new DatagramPacket(head, head.length, address0,
+										Integer.parseInt(port0));
+								
+								InetAddress address1 = InetAddress.getByName(server1);
+								DatagramPacket datagramPacket1 = new DatagramPacket(head, head.length, address1,
+										Integer.parseInt(port1));
+								
+								InetAddress address2 = InetAddress.getByName(server2);
+								DatagramPacket datagramPacket2 = new DatagramPacket(head, head.length, address2,
+										Integer.parseInt(port2));
+								
+								datagramSocket.send(datagramPacket0);
+								datagramSocket.send(datagramPacket1);
+								datagramSocket.send(datagramPacket2);
 
 								datagramSocket.close();
-								
+
 								Platform.runLater(() -> {
 									((MainController) (Main.loader.getController())).refresh(
-											trainNum.getText().split(" ")[0], oldTime, reportTime.getText(),
+											trainNum.getText().split(" ")[0], oldTime.split(" ")[1], reportTime.getText(),
 											inOrOut.getValue());
 									oldTime = reportTime.getText();
+									
+									Stage stage = (Stage) cancelReport.getScene().getWindow();
+									stage.close();
 								});
 							} catch (Exception e) {
 								// TODO Auto-generated catch block
@@ -175,7 +207,7 @@ public class ReportTimeController implements Initializable {
 				if (inOrOut.getValue() != null) {
 					String time = TimeTableVM.searchTrainState(trainNum.getText().split(" ")[0], stationName.getValue(),
 							inOrOut.getValue());
-					reportTime.setText(time);
+					reportTime.setText(time.split(" ")[1]);
 					oldTime = time;
 				}
 			}
@@ -187,36 +219,11 @@ public class ReportTimeController implements Initializable {
 				if (stationName.getValue() != null) {
 					String time = TimeTableVM.searchTrainState(trainNum.getText().split(" ")[0], stationName.getValue(),
 							inOrOut.getValue());
-					reportTime.setText(time);
+					reportTime.setText(time.split(" ")[1]);
 					oldTime = time;
 				}
 			}
 		});
-	}
-
-	private byte[] toMinByte(char c) {
-		byte[] result = new byte[1];
-		// 由高位到低位
-		result[0] = (byte) (c & 0xFF);
-		return result;
-	}
-
-	private byte[] toMinByte(short c) {
-		byte[] result = new byte[2];
-		// 由高位到低位
-		result[1] = (byte) ((c >> 8) & 0xFF);
-		result[0] = (byte) (c & 0xFF);
-		return result;
-	}
-
-	private byte[] toMinByte(int c) {
-		byte[] result = new byte[4];
-		// 由高位到低位
-		result[3] = (byte) ((c >> 24) & 0xFF);
-		result[2] = (byte) ((c >> 16) & 0xFF);
-		result[1] = (byte) ((c >> 8) & 0xFF);
-		result[0] = (byte) (c & 0xFF);
-		return result;
 	}
 
 	public void setData(List<SimpleStringProperty> list) {
