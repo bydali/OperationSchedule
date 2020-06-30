@@ -71,6 +71,7 @@ public class Main extends Application {
 			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>(){
 	            public void handle(WindowEvent event) {
 	                Platform.exit();
+	                UpdateTimeController.timer.cancel();
 	            }
 	        });
 			primaryStage.show();

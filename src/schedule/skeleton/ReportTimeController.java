@@ -10,6 +10,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Timer;
 
 import c4j.ReportTimeCallCpp;
 import javafx.application.Platform;
@@ -107,9 +108,13 @@ public class ReportTimeController implements Initializable {
 								byte[] data6 = BigLittleConverter.toMinByte((char) 3);
 								byte[] data7 = BigLittleConverter.toMinByte((short) 1);
 								byte[] data8 = BigLittleConverter.toMinByte((char) 93);
-								byte[] data9 = BigLittleConverter.toMinByte((short) Short.parseShort(oldTime.split(" ")[0].split("-")[0]));
-								byte[] data10 = BigLittleConverter.toMinByte((char) Short.parseShort(oldTime.split(" ")[0].split("-")[1]));
-								byte[] data11 = BigLittleConverter.toMinByte((char) Short.parseShort(oldTime.split(" ")[0].split("-")[2]));
+								System.out.println(oldTime);
+								byte[] data9 = BigLittleConverter
+										.toMinByte((short) Short.parseShort(oldTime.split(" ")[0].split("-")[0]));
+								byte[] data10 = BigLittleConverter
+										.toMinByte((char) Short.parseShort(oldTime.split(" ")[0].split("-")[1]));
+								byte[] data11 = BigLittleConverter
+										.toMinByte((char) Short.parseShort(oldTime.split(" ")[0].split("-")[2]));
 								byte[] data12 = BigLittleConverter.toMinByte(
 										(int) ((LocalTime.now().getHour() * 60 + LocalTime.now().getMinute()) * 60
 												+ LocalTime.now().getSecond()) * 1000);
@@ -129,21 +134,29 @@ public class ReportTimeController implements Initializable {
 
 								// 包1 站点信息
 								byte[] xh = BigLittleConverter.toMinByte((char) msgCount1++);
-								byte[] jcz = BigLittleConverter.toMinByte((char) 0xAA);
-								byte[] y = BigLittleConverter.toMinByte((char) Integer.parseInt(oldTime.split(" ")[0].split("-")[1]));
-								byte[] n = BigLittleConverter.toMinByte((char) Integer.parseInt(oldTime.split(" ")[0].split("-")[0]));
-								byte[] s = BigLittleConverter.toMinByte((char) Integer.parseInt(oldTime.split(" ")[1].split(":")[0]));
-								byte[] r = BigLittleConverter.toMinByte((char) Integer.parseInt(oldTime.split(" ")[0].split("-")[2]));
-								byte[] m = BigLittleConverter.toMinByte((char) Integer.parseInt(oldTime.split(" ")[1].split(":")[2]));
-								byte[] f = BigLittleConverter.toMinByte((char) Integer.parseInt(oldTime.split(" ")[1].split(":")[1]));
+								byte[] jcz = BigLittleConverter
+										.toMinByte((char) (inOrOut.getValue().equals("接车") ? 0xAA : 0x55));
+								byte[] y = BigLittleConverter
+										.toMinByte((char) Integer.parseInt(oldTime.split(" ")[0].split("-")[1]));
+								byte[] n = BigLittleConverter
+										.toMinByte((char) Integer.parseInt(oldTime.split(" ")[0].split("-")[0]));
+								byte[] s = BigLittleConverter
+										.toMinByte((char) Integer.parseInt(reportTime.getText().split(":")[0]));
+								byte[] r = BigLittleConverter
+										.toMinByte((char) Integer.parseInt(oldTime.split(" ")[0].split("-")[2]));
+								byte[] m = BigLittleConverter
+										.toMinByte((char) Integer.parseInt(reportTime.getText().split(":")[2]));
+								byte[] f = BigLittleConverter
+										.toMinByte((char) Integer.parseInt(reportTime.getText().split(":")[1]));
 
 								String strName = stationName.getValue();
 								byte[] name = strName.getBytes();
 								byte[] cd = BigLittleConverter.toMinByte((char) name.length);
 
-								byte[] head = BigLittleConverter.concatBytes(data0, data1, data2, data3, data4, data5, data6, data7, data8,
-										data9, data10, data11, data12, data13, data14, data15, data16, data17, data18,
-										data19, bh, cllx, glcbh, by, xh, jcz, y, n, s, r, m, f, cd, name);
+								byte[] head = BigLittleConverter.concatBytes(data0, data1, data2, data3, data4, data5,
+										data6, data7, data8, data9, data10, data11, data12, data13, data14, data15,
+										data16, data17, data18, data19, bh, cllx, glcbh, by, xh, jcz, y, n, s, r, m, f,
+										cd, name);
 
 								// 修改长度
 								byte[] totalLen = BigLittleConverter.toMinByte((short) (head.length));
@@ -163,15 +176,15 @@ public class ReportTimeController implements Initializable {
 								InetAddress address0 = InetAddress.getByName(server0);
 								DatagramPacket datagramPacket0 = new DatagramPacket(head, head.length, address0,
 										Integer.parseInt(port0));
-								
+
 								InetAddress address1 = InetAddress.getByName(server1);
 								DatagramPacket datagramPacket1 = new DatagramPacket(head, head.length, address1,
 										Integer.parseInt(port1));
-								
+
 								InetAddress address2 = InetAddress.getByName(server2);
 								DatagramPacket datagramPacket2 = new DatagramPacket(head, head.length, address2,
 										Integer.parseInt(port2));
-								
+
 								datagramSocket.send(datagramPacket0);
 								datagramSocket.send(datagramPacket1);
 								datagramSocket.send(datagramPacket2);
@@ -180,10 +193,10 @@ public class ReportTimeController implements Initializable {
 
 								Platform.runLater(() -> {
 									((MainController) (Main.loader.getController())).refresh(
-											trainNum.getText().split(" ")[0], oldTime.split(" ")[1], reportTime.getText(),
-											inOrOut.getValue());
+											trainNum.getText().split(" ")[0], oldTime.split(" ")[1],
+											reportTime.getText(), inOrOut.getValue());
 									oldTime = reportTime.getText();
-									
+
 									Stage stage = (Stage) cancelReport.getScene().getWindow();
 									stage.close();
 								});
