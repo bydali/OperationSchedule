@@ -62,7 +62,6 @@ public class UpdateTimeController implements Initializable {
 	@FXML
 	private TextField interval;
 
-	private static boolean isTimer;
 	public static Timer timer = new Timer();
 
 	private static String server0;
@@ -72,21 +71,37 @@ public class UpdateTimeController implements Initializable {
 	private static String server2;
 	private static String port2;
 
-	private static String armyNumT;
-	private static String routeNumT;
-	private static String oNameT;
-	private static String oTimeT;
-	private static String cNameT;
-	private static String inTimeT;
-	private static String outTimeT;
-	private static String nNameT;
-	private static String nTimeT;
-	private static String dNameT;
-	private static String dTimeT;
+	private static String armyNumT = "1";
+	private static String routeNumT = "1";
+	private static String oNameT = "北京西*高速场";
+	private static String oTimeT = "2020-06-30 13:20:21";
+	private static String cNameT = "北京西*高速场";
+	private static String inTimeT = "2020-06-30 13:20:21";
+	private static String outTimeT = "2020-06-30 13:20:21";
+	private static String nNameT = "杜家坎线路所";
+	private static String nTimeT = "2020-06-30 13:20:21";
+	private static String dNameT = "许昌东";
+	private static String dTimeT = "2020-06-30 13:20:21";
+	private static boolean isTimer;
+	private static String intervalT = "5";
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
+
+		interval.setText(intervalT);
+		armyNum.setText(armyNumT);
+		routeNum.setText(routeNumT);
+		oName.setText(oNameT);
+		oTime.setText(oTimeT);
+		cName.setText(cNameT);
+		inTime.setText(inTimeT);
+		outTime.setText(outTimeT);
+		nName.setText(nNameT);
+		nTime.setText(nTimeT);
+		dName.setText(dNameT);
+		dTime.setText(dTimeT);
+		timerUpdate.setSelected(isTimer);
 
 		try {
 			server0 = ReadFromLocal.getPath(3);
@@ -99,6 +114,15 @@ public class UpdateTimeController implements Initializable {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+
+		cancelBtn.setOnMouseClicked(new EventHandler<Event>() {
+			@Override
+			public void handle(Event event) {
+				// TODO Auto-generated method stub
+				Stage stage = (Stage) cancelBtn.getScene().getWindow();
+				stage.close();
+			}
+		});
 
 		updateBtn.setOnMouseClicked(new EventHandler<Event>() {
 			@Override
@@ -117,6 +141,8 @@ public class UpdateTimeController implements Initializable {
 					dNameT = dName.getText();
 					dTimeT = dTime.getText();
 
+					intervalT = interval.getText();
+
 					new Thread(new Runnable() {
 						@Override
 						public void run() {
@@ -129,34 +155,28 @@ public class UpdateTimeController implements Initializable {
 				}
 			}
 		});
-		cancelBtn.setOnMouseClicked(new EventHandler<Event>() {
-			@Override
-			public void handle(Event event) {
-				// TODO Auto-generated method stub
-				Stage stage = (Stage) cancelBtn.getScene().getWindow();
-				stage.close();
-			}
-		});
 		timerUpdate.selectedProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 				// TODO Auto-generated method stub
+				armyNumT = armyNum.getText();
+				routeNumT = routeNum.getText();
+				oNameT = oName.getText();
+				oTimeT = oTime.getText();
+				cNameT = cName.getText();
+				inTimeT = inTime.getText();
+				outTimeT = outTime.getText();
+				nNameT = nName.getText();
+				nTimeT = nTime.getText();
+				dNameT = dName.getText();
+				dTimeT = dTime.getText();
 				isTimer = newValue;
+				intervalT = interval.getText();
+
 				if (newValue) {
 					timer.scheduleAtFixedRate(new TimerTask() {
 						@Override
 						public void run() {
-							armyNumT = armyNum.getText();
-							routeNumT = routeNum.getText();
-							oNameT = oName.getText();
-							oTimeT = oTime.getText();
-							cNameT = cName.getText();
-							inTimeT = inTime.getText();
-							outTimeT = outTime.getText();
-							nNameT = nName.getText();
-							nTimeT = nTime.getText();
-							dNameT = dName.getText();
-							dTimeT = dTime.getText();
 							update(armyNumT, routeNumT, oNameT, oTimeT, cNameT, inTimeT, outTimeT, nNameT, nTimeT,
 									dNameT, dTimeT);
 						}
@@ -167,7 +187,6 @@ public class UpdateTimeController implements Initializable {
 				}
 			}
 		});
-		timerUpdate.setSelected(isTimer);
 	}
 
 	private void update(String armyNumT, String routeNumT, String oNameT, String oTimeT, String cNameT, String inTimeT,
@@ -311,10 +330,10 @@ public class UpdateTimeController implements Initializable {
 
 			datagramSocket.close();
 
-			Platform.runLater(() -> {
-				Stage stage = (Stage) cancelBtn.getScene().getWindow();
-				stage.close();
-			});
+			// Platform.runLater(() -> {
+			// Stage stage = (Stage) cancelBtn.getScene().getWindow();
+			// stage.close();
+			// });
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

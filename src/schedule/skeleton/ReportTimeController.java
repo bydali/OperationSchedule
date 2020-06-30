@@ -139,7 +139,7 @@ public class ReportTimeController implements Initializable {
 								byte[] y = BigLittleConverter
 										.toMinByte((char) Integer.parseInt(oldTime.split(" ")[0].split("-")[1]));
 								byte[] n = BigLittleConverter
-										.toMinByte((char) Integer.parseInt(oldTime.split(" ")[0].split("-")[0]));
+										.toMinByte((char) Integer.parseInt(oldTime.split(" ")[0].split("-")[0]) - 2000);
 								byte[] s = BigLittleConverter
 										.toMinByte((char) Integer.parseInt(reportTime.getText().split(":")[0]));
 								byte[] r = BigLittleConverter
