@@ -78,6 +78,33 @@ public class ReportTimeController implements Initializable {
 				stage.close();
 			}
 		});
+		
+		stationName.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
+			@Override
+			public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
+				if (inOrOut.getValue() != null) {
+					String time = TimeTableVM.searchTrainState(trainNum.getText().split(" ")[0], stationName.getValue(),
+							inOrOut.getValue());
+//					reportTime.setText(time.split(" ")[1]);
+					reportTime.setText(time);
+					oldTime = time;
+				}
+			}
+		});
+
+		inOrOut.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
+			@Override
+			public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
+				if (stationName.getValue() != null) {
+					String time = TimeTableVM.searchTrainState(trainNum.getText().split(" ")[0], stationName.getValue(),
+							inOrOut.getValue());
+//					reportTime.setText(time.split(" ")[1]);
+					reportTime.setText(time);
+					oldTime = time;
+				}
+			}
+		});
+		
 		reportTimeBtn.setOnMouseClicked(new EventHandler<Event>() {
 			@Override
 			public void handle(Event event) {
@@ -108,7 +135,7 @@ public class ReportTimeController implements Initializable {
 								byte[] data6 = BigLittleConverter.toMinByte((char) 3);
 								byte[] data7 = BigLittleConverter.toMinByte((short) 1);
 								byte[] data8 = BigLittleConverter.toMinByte((char) 93);
-								System.out.println(oldTime);
+
 								byte[] data9 = BigLittleConverter
 										.toMinByte((short) Short.parseShort(oldTime.split(" ")[0].split("-")[0]));
 								byte[] data10 = BigLittleConverter
@@ -139,15 +166,15 @@ public class ReportTimeController implements Initializable {
 								byte[] y = BigLittleConverter
 										.toMinByte((char) Integer.parseInt(oldTime.split(" ")[0].split("-")[1]));
 								byte[] n = BigLittleConverter
-										.toMinByte((char) Integer.parseInt(oldTime.split(" ")[0].split("-")[0]) - 2000);
+										.toMinByte((char) (Integer.parseInt(oldTime.split(" ")[0].split("-")[0]) - 2000));
 								byte[] s = BigLittleConverter
-										.toMinByte((char) Integer.parseInt(reportTime.getText().split(":")[0]));
+										.toMinByte((char) Integer.parseInt(reportTime.getText().split(" ")[1].split(":")[0]));
 								byte[] r = BigLittleConverter
 										.toMinByte((char) Integer.parseInt(oldTime.split(" ")[0].split("-")[2]));
 								byte[] m = BigLittleConverter
-										.toMinByte((char) Integer.parseInt(reportTime.getText().split(":")[2]));
+										.toMinByte((char) Integer.parseInt(reportTime.getText().split(" ")[1].split(":")[2]));
 								byte[] f = BigLittleConverter
-										.toMinByte((char) Integer.parseInt(reportTime.getText().split(":")[1]));
+										.toMinByte((char) Integer.parseInt(reportTime.getText().split(" ")[1].split(":")[1]));
 
 								String strName = stationName.getValue();
 								byte[] name = strName.getBytes();
@@ -194,7 +221,7 @@ public class ReportTimeController implements Initializable {
 								Platform.runLater(() -> {
 									((MainController) (Main.loader.getController())).refresh(
 											trainNum.getText().split(" ")[0], oldTime.split(" ")[1],
-											reportTime.getText(), inOrOut.getValue());
+											reportTime.getText().split(" ")[1], inOrOut.getValue());
 									oldTime = reportTime.getText();
 
 									Stage stage = (Stage) cancelReport.getScene().getWindow();
@@ -210,30 +237,6 @@ public class ReportTimeController implements Initializable {
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
-			}
-		});
-
-		stationName.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
-			@Override
-			public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
-				if (inOrOut.getValue() != null) {
-					String time = TimeTableVM.searchTrainState(trainNum.getText().split(" ")[0], stationName.getValue(),
-							inOrOut.getValue());
-					reportTime.setText(time.split(" ")[1]);
-					oldTime = time;
-				}
-			}
-		});
-
-		inOrOut.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
-			@Override
-			public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
-				if (stationName.getValue() != null) {
-					String time = TimeTableVM.searchTrainState(trainNum.getText().split(" ")[0], stationName.getValue(),
-							inOrOut.getValue());
-					reportTime.setText(time.split(" ")[1]);
-					oldTime = time;
 				}
 			}
 		});

@@ -16,28 +16,38 @@ import schedule.model.TrainState;
 
 public class TimeTableVM {
 
+	// 时刻表model
 	public static TimeTable timeTable;
 
+	// 全部车站vm
 	public static List<StationVM> allStationVM;
 
+	// 列车表格vm
 	public static ObservableList<List<SimpleStringProperty>> fullTaskVMList;
 
 	public TimeTableVM() throws IOException {
 		// TODO Auto-generated constructor stub
-		generateTimeTableVM();
+		generateTimeTableVM("");
+	}
+	
+	public TimeTableVM(String trainFile) throws IOException {
+		// TODO Auto-generated constructor stub
+		generateTimeTableVM(trainFile);
 	}
 
-	private void generateTimeTableVM() throws IOException {
-		// 生成原始时刻表数据
-		timeTable = ReadFromLocal.readTT();
+	private void generateTimeTableVM(String trainFile) throws IOException {
+		if (trainFile.equals("")) {
+			timeTable = ReadFromLocal.readTT();
+		}
+		else {
+			timeTable = ReadFromLocal.readTT(trainFile);
+		}
 
-		// 生成全部车站viewmodel
 		allStationVM = new ArrayList<StationVM>();
 		for (Station station : timeTable.allStation) {
 			allStationVM.add(new StationVM(station));
 		}
 
-		//
 		fullTaskVMList = FXCollections.observableArrayList();
 		for (FullTask fullTask : timeTable.allTrainFullTask) {
 			List<SimpleStringProperty> lst = new ArrayList<>();
@@ -55,8 +65,10 @@ public class TimeTableVM {
 	public void updateTrainState(String oldTrainNum, String oldTime, String newTime, String inOrOut) {
 		// TODO Auto-generated method stub
 		timeTable.updateTrainState(oldTrainNum, oldTime, newTime, inOrOut);
+		timeTable.generateAllIOTask();
 	}
 
+	// 查找车次在某个车站的时间 eg."2012-02-12 19:21:20"
 	public static String searchTrainState(String trainNum, String station, String inOrOut) {
 		for (FullTask fullTask : timeTable.allTrainFullTask) {
 			if (fullTask.trainNum.equals(trainNum)) {

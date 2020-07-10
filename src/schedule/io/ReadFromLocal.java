@@ -36,4 +36,8 @@ public class ReadFromLocal {
 	public static TimeTable readTT() throws IOException {
 		return new TimeTable(getPath(1), getPath(2));
 	}
+
+	public static TimeTable readTT(String trainFile) throws IOException {
+		return new TimeTable(getPath(1), trainFile);
+	}
 }

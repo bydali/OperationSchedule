@@ -37,10 +37,13 @@ import org.dom4j.io.SAXReader;
 
 public class TimeTable {
 
+	// 时间点状态的序列
 	public List<TrainState> allTrainState;
 
+	// 排序后的时间点状态的序列
 	public Map<String, List<TrainState>> allTrainPointTask;
 
+	// 扩充为全图时间点状态的序列
 	public List<FullTask> allTrainFullTask;
 
 	public List<Station> allStation;
@@ -48,9 +51,11 @@ public class TimeTable {
 	// 测试构造函数
 	public TimeTable(String stationPath, String timeTablePath) throws IOException {
 		// TODO Auto-generated constructor stub
+		// 生成简单的车站信息
 		readAllStations(stationPath);
+		// 生成列车时间点状态的序列
 		readAllTrainStates(timeTablePath);
-
+		// 扩展为全图的序列
 		generateAllIOTask();
 	}
 
@@ -81,6 +86,7 @@ public class TimeTable {
 			while (iterator.hasNext()) {
 				Element stu = (Element) iterator.next();
 				if (stu.getName().equals("LCCC")) {
+					// 读取车次
 					trainNum = stu.getText();
 				}
 				if (stu.getName().equals("YXZD")) {
@@ -182,7 +188,7 @@ public class TimeTable {
 	}
 
 	public void generateAllIOTask() {
-		// 以车次为唯一键，将每趟车次的路径放在字典中
+		// 以车次为key，将每趟车次的时间点状态序列放在 value中
 		allTrainPointTask = new HashMap<String, List<TrainState>>();
 		for (TrainState trainState : allTrainState) {
 			if (!allTrainPointTask.containsKey(trainState.trainNum)) {
@@ -204,6 +210,7 @@ public class TimeTable {
 				}
 			});
 
+			// 将每趟车次的路径强行扩展为全图
 			List<StationIO> allStationIO = new ArrayList<>();
 			for (Station station : allStation) {
 				allStationIO.add(new StationIO(station.getStationName()));
@@ -211,12 +218,15 @@ public class TimeTable {
 
 			for (int i = 0; i < allTrainPointTask.get(key).size(); i++) {
 				for (int j = 0; j < allStationIO.size(); j++) {
+					// 某车次事实上出现在某车站
 					if (allTrainPointTask.get(key).get(i).stationName.equals(allStationIO.get(j).stationName)) {
+						// 这里认为某车次第一个时间点状态必须为出站？
 						if (i == 0) {
 							allStationIO.get(j).outTime = allTrainPointTask.get(key).get(i).time;
 							allStationIO.get(j).outDate = allTrainPointTask.get(key).get(i).date;
 							break;
 						}
+						// 补充进站或者出站
 						if (allStationIO.get(j).inTime == null) {
 							allStationIO.get(j).inTime = allTrainPointTask.get(key).get(i).time;
 							allStationIO.get(j).inDate = allTrainPointTask.get(key).get(i).date;
@@ -242,6 +252,7 @@ public class TimeTable {
 		boolean find = false;
 		int gapTime = 0;
 		for (TrainState trainState : allTrainPointTask.get(trainNum)) {
+			// 更新修改后的时间点
 			if ((!find) && trainState.time.equals(old) && trainState.type.equals(inOrOut)) {
 				String[] newTimeInfo = newTime.split(":");
 				LocalTime newT = LocalTime.of(Integer.parseInt(newTimeInfo[0]), Integer.parseInt(newTimeInfo[1]),
@@ -253,7 +264,9 @@ public class TimeTable {
 
 				trainState.time = newT;
 				find = true;
-			} else if (trainState.time != null) {
+			} 
+			// 更新之后的时间点
+			else if (trainState.time != null) {
 				LocalTime new_ = trainState.time.plusSeconds(gapTime);
 				trainState.time = new_;
 			}

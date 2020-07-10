@@ -54,8 +54,6 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-//			primaryStage.initStyle(StageStyle.TRANSPARENT);
-			
 		    loader = new FXMLLoader(getClass().getResource("Main.fxml"));
 			BorderPane root = (BorderPane) loader.load();
 
@@ -70,8 +68,11 @@ public class Main extends Application {
 	                getClass().getResourceAsStream("app_icon.PNG")));
 			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>(){
 	            public void handle(WindowEvent event) {
+	            	// 关闭所有窗口
 	                Platform.exit();
-	                UpdateTimeController.timer.cancel();
+	                
+	                // 关闭所有后台线程
+	                closeBackEndTasks();
 	            }
 	        });
 			primaryStage.show();
@@ -80,6 +81,10 @@ public class Main extends Application {
 		}
 	}
 
+	public static void closeBackEndTasks() {
+		UpdateTimeController.timer.cancel();
+	}
+	
 	private GridPane setCustomWindow(Stage primaryStage, BorderPane root) {
 		GridPane gpTitle = new GridPane();
 		gpTitle.setAlignment(Pos.CENTER_LEFT);
@@ -256,9 +261,9 @@ public class Main extends Application {
 
 	// 初始化时刻大表
 	private void setData(MainController controller) throws IOException {
-		// 生成时刻表viewmodel
+		// 生成时刻表VM
 		TimeTableVM timeTableVM = new TimeTableVM();
-		// 主界面控制器设置viewmodel到主界面控件
+		// 主界面控制器设置
 		controller.setData(timeTableVM);
 	}
 

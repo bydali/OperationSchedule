@@ -1,5 +1,6 @@
 package schedule.skeleton;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalTime;
@@ -23,6 +24,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -35,6 +37,8 @@ import javafx.scene.image.Image;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -47,6 +51,9 @@ import schedule.viewmodel.TrainStateVM;
 
 public class MainController implements Initializable {
 	@FXML
+	private SplitPane sP;
+	
+	@FXML
 	private Tab operateTab;
 
 	@FXML
@@ -54,12 +61,15 @@ public class MainController implements Initializable {
 
 	@FXML
 	private TableView<List<SimpleStringProperty>> trainStateView;
-	
+
 	@FXML
 	private MenuItem reportTime;
-	
+
 	@FXML
 	private MenuItem trainStateUpdate;
+
+	@FXML
+	private MenuItem openTrainStates;
 
 	private TimeTableVM timeTableVM;
 	private OperateChartController mapController;
@@ -67,6 +77,25 @@ public class MainController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
+		openTrainStates.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				FileChooser fileChooser = new FileChooser();
+				fileChooser.setTitle("Choose File");
+				fileChooser.getExtensionFilters().add(new ExtensionFilter("XML", "*.xml"));
+				File file = fileChooser.showOpenDialog(sP.getScene().getWindow());
+				if (file != null) {
+					try {
+						setData(new TimeTableVM(file.getAbsolutePath()));
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		});
+
 		reportTime.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				// 打开报点的stage
@@ -75,7 +104,7 @@ public class MainController implements Initializable {
 				AnchorPane root;
 				try {
 					root = (AnchorPane) loader.load();
-					Scene reportScene = new Scene(root, 500, 200);
+					Scene reportScene = new Scene(root, 530, 200);
 					reportScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 					reportTime.setScene(reportScene);
 					reportTime.setResizable(false);
@@ -128,44 +157,50 @@ public class MainController implements Initializable {
 		controller.setData(timeTableVM);
 		operateTab.setContent(gp);
 
-//		MenuItem mI = new MenuItem("实时报点");
-//		mI.setOnAction(new EventHandler<ActionEvent>() {
-//			public void handle(ActionEvent event) {
-//				List<SimpleStringProperty> selectItemList = trainStateView.getSelectionModel().getSelectedItem();
-//
-//				// 打开报点的stage
-//				Stage reportTime = new Stage();
-//				FXMLLoader loader = new FXMLLoader(getClass().getResource("ReportTime.fxml"));
-//				AnchorPane root;
-//				try {
-//					root = (AnchorPane) loader.load();
-//					Scene reportScene = new Scene(root, 500, 200);
-//					reportScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-//					reportTime.setScene(reportScene);
-//					reportTime.setResizable(false);
-//					reportTime.setTitle("列车报点");
-//					reportTime.getIcons().add(new Image(getClass().getResourceAsStream("app_icon.PNG")));
-//					// reportTime.initOwner(stage);
-//					// reportTime.initModality(Modality.WINDOW_MODAL);
-//					ReportTimeController reportTimeController = loader.getController();
-//					reportTimeController.setData(trainStateView.getSelectionModel().getSelectedItem());
-//					reportTime.show();
-//				} catch (IOException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//
-//		ContextMenu cM = new ContextMenu();
-//		cM.getItems().add(mI);
-//		trainStateView.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
-//			@Override
-//			public void handle(ContextMenuEvent event) {
-//				cM.show(trainStateView, event.getScreenX(), event.getScreenY());
-//			}
-//		});
+		// MenuItem mI = new MenuItem("实时报点");
+		// mI.setOnAction(new EventHandler<ActionEvent>() {
+		// public void handle(ActionEvent event) {
+		// List<SimpleStringProperty> selectItemList =
+		// trainStateView.getSelectionModel().getSelectedItem();
+		//
+		// // 打开报点的stage
+		// Stage reportTime = new Stage();
+		// FXMLLoader loader = new
+		// FXMLLoader(getClass().getResource("ReportTime.fxml"));
+		// AnchorPane root;
+		// try {
+		// root = (AnchorPane) loader.load();
+		// Scene reportScene = new Scene(root, 500, 200);
+		// reportScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		// reportTime.setScene(reportScene);
+		// reportTime.setResizable(false);
+		// reportTime.setTitle("列车报点");
+		// reportTime.getIcons().add(new
+		// Image(getClass().getResourceAsStream("app_icon.PNG")));
+		// // reportTime.initOwner(stage);
+		// // reportTime.initModality(Modality.WINDOW_MODAL);
+		// ReportTimeController reportTimeController = loader.getController();
+		// reportTimeController.setData(trainStateView.getSelectionModel().getSelectedItem());
+		// reportTime.show();
+		// } catch (IOException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		// }
+		// });
+		//
+		// ContextMenu cM = new ContextMenu();
+		// cM.getItems().add(mI);
+		// trainStateView.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>()
+		// {
+		// @Override
+		// public void handle(ContextMenuEvent event) {
+		// cM.show(trainStateView, event.getScreenX(), event.getScreenY());
+		// }
+		// });
 
+		trainStateView.getColumns().clear();
+		
 		TableColumn<List<SimpleStringProperty>, String> col0 = new TableColumn<>("车次");
 		col0.setMinWidth(100);
 		col0.setCellValueFactory(data -> data.getValue().get(0));
@@ -237,7 +272,9 @@ public class MainController implements Initializable {
 					for (SimpleStringProperty ssp : props) {
 						if (ssp.getValue().equals(oldTrainNum)) {
 							continue;
-						} else if ((!find) && ssp.getValue().equals(oldTime)) {
+						}
+						// 找到修改的时间点
+						else if ((!find) && ssp.getValue().equals(oldTime)) {
 							switch (inOrOut) {
 							case "接车":
 								if (props.indexOf(ssp) % 2 == 1) {
@@ -274,7 +311,9 @@ public class MainController implements Initializable {
 							default:
 								break;
 							}
-						} else if (!ssp.getValue().equals("")) {
+						}
+						// 在修改的时间点之后依次后移时间
+						else if (!ssp.getValue().equals("")) {
 							LocalTime old = LocalTime.of(Integer.valueOf(ssp.getValue().split(":")[0]),
 									Integer.valueOf(ssp.getValue().split(":")[1]),
 									Integer.valueOf(ssp.getValue().split(":")[2]));
@@ -285,10 +324,12 @@ public class MainController implements Initializable {
 					break;
 				}
 			}
+			// 刷新列车表格
 			trainStateView.setItems(timeTableVM.fullTaskVMList);
 
+			// 刷新时刻表
 			timeTableVM.updateTrainState(oldTrainNum, oldTime, newTime, inOrOut);
-			timeTableVM.timeTable.generateAllIOTask();
+			// 刷新作业大表
 			mapController.refreshMap(timeTableVM);
 		}
 	}
