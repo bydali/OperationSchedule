@@ -1,6 +1,7 @@
 package test;
 
 import java.time.LocalTime;
+import java.util.regex.Pattern;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -15,10 +16,7 @@ public class TempFunc extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-
-			byte[] t0=BigLittleConverter.toMinByte((char) (20));
-			byte[] t1=BigLittleConverter.toMinByte(20);
-
+			
 			AnchorPane root = (AnchorPane) FXMLLoader.load(getClass().getResource("Temp.fxml"));
 			Scene scene = new Scene(root, 1680, 1050);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());

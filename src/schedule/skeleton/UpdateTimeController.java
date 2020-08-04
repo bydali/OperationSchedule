@@ -7,10 +7,12 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.regex.Pattern;
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -24,6 +26,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import schedule.io.BigLittleConverter;
+import schedule.io.FormatChecker;
 import schedule.io.ReadFromLocal;
 
 public class UpdateTimeController implements Initializable {
@@ -115,6 +118,95 @@ public class UpdateTimeController implements Initializable {
 			e1.printStackTrace();
 		}
 
+		armyNum.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if (!oldValue.equals(newValue)) {
+					armyNumT = armyNum.getText();
+				}
+			}
+		});
+		routeNum.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if (!oldValue.equals(newValue)) {
+					routeNumT = routeNum.getText();
+				}
+			}
+		});
+		oName.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if (!oldValue.equals(newValue)) {
+					oNameT = oName.getText();
+				}
+			}
+		});
+		oTime.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if ((!oldValue.equals(newValue)) && FormatChecker.checkTimeFormat(newValue)) {
+					oTimeT = oTime.getText();
+				}
+			}
+		});
+		cName.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if (!oldValue.equals(newValue)) {
+					cNameT = cName.getText();
+				}
+			}
+		});
+		inTime.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if ((!oldValue.equals(newValue)) && FormatChecker.checkTimeFormat(newValue)) {
+					inTimeT = inTime.getText();
+				}
+			}
+		});
+		outTime.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if ((!oldValue.equals(newValue)) && FormatChecker.checkTimeFormat(newValue)) {
+					outTimeT = outTime.getText();
+				}
+			}
+		});
+		nName.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if (!oldValue.equals(newValue)) {
+					nNameT = nName.getText();
+				}
+			}
+		});
+		nTime.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if ((!oldValue.equals(newValue)) && FormatChecker.checkTimeFormat(newValue)) {
+					nTimeT = nTime.getText();
+				}
+			}
+		});
+		dName.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if (!oldValue.equals(newValue)) {
+					dNameT = dName.getText();
+				}
+			}
+		});
+		dTime.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if ((!oldValue.equals(newValue)) && FormatChecker.checkTimeFormat(newValue)) {
+					dTimeT = dTime.getText();
+				}
+			}
+		});
+
 		cancelBtn.setOnMouseClicked(new EventHandler<Event>() {
 			@Override
 			public void handle(Event event) {
@@ -129,27 +221,32 @@ public class UpdateTimeController implements Initializable {
 			public void handle(Event event) {
 				// TODO Auto-generated method stub
 				try {
-					armyNumT = armyNum.getText();
-					routeNumT = routeNum.getText();
-					oNameT = oName.getText();
-					oTimeT = oTime.getText();
-					cNameT = cName.getText();
-					inTimeT = inTime.getText();
-					outTimeT = outTime.getText();
-					nNameT = nName.getText();
-					nTimeT = nTime.getText();
-					dNameT = dName.getText();
-					dTimeT = dTime.getText();
+					if (FormatChecker.checkTimeFormat(oTime.getText()) && FormatChecker.checkTimeFormat(inTime.getText())
+							&& FormatChecker.checkTimeFormat(outTime.getText())
+							&& FormatChecker.checkTimeFormat(nTime.getText())
+							&& FormatChecker.checkTimeFormat(dTime.getText())) {
+						armyNumT = armyNum.getText();
+						routeNumT = routeNum.getText();
+						oNameT = oName.getText();
+						oTimeT = oTime.getText();
+						cNameT = cName.getText();
+						inTimeT = inTime.getText();
+						outTimeT = outTime.getText();
+						nNameT = nName.getText();
+						nTimeT = nTime.getText();
+						dNameT = dName.getText();
+						dTimeT = dTime.getText();
 
-					intervalT = interval.getText();
+						intervalT = interval.getText();
 
-					new Thread(new Runnable() {
-						@Override
-						public void run() {
-							update(armyNumT, routeNumT, oNameT, oTimeT, cNameT, inTimeT, outTimeT, nNameT, nTimeT,
-									dNameT, dTimeT);
-						}
-					}).start();
+						new Thread(new Runnable() {
+							@Override
+							public void run() {
+								update(armyNumT, routeNumT, oNameT, oTimeT, cNameT, inTimeT, outTimeT, nNameT, nTimeT,
+										dNameT, dTimeT);
+							}
+						}).start();
+					}
 				} catch (Exception e) {
 					// TODO: handle exception
 				}
