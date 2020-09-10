@@ -1,7 +1,13 @@
 package schedule.skeleton;
 
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.URL;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -43,6 +49,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
+import schedule.io.BigLittleConverter;
+import schedule.io.ReadFromLocal;
+import schedule.model.TimeTable;
 import schedule.model.TrainState;
 import schedule.station.FoldBodyController;
 import schedule.viewmodel.StationVM;
@@ -52,7 +61,7 @@ import schedule.viewmodel.TrainStateVM;
 public class MainController implements Initializable {
 	@FXML
 	private SplitPane sP;
-	
+
 	@FXML
 	private Tab operateTab;
 
@@ -71,12 +80,27 @@ public class MainController implements Initializable {
 	@FXML
 	private MenuItem openTrainStates;
 
+	@FXML
+	private MenuItem syncTimeTable;
+
 	private TimeTableVM timeTableVM;
 	private OperateChartController mapController;
+	private FXMLLoader operateChartLoader;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
+		// 加载作业大表控件
+		operateChartLoader = new FXMLLoader(getClass().getResource("OperateChart.fxml"));
+		GridPane gp;
+		try {
+			gp = (GridPane) operateChartLoader.load();
+			operateTab.setContent(gp);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
 		openTrainStates.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -144,18 +168,28 @@ public class MainController implements Initializable {
 				}
 			}
 		});
+		syncTimeTable.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						sendTimeTable();
+					}
+				}).start();
+			}
+		});
 	}
 
 	public void setData(TimeTableVM timeTableVM) throws IOException {
 		this.timeTableVM = timeTableVM;
 
-		// 加载作业大表控件
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("OperateChart.fxml"));
-		GridPane gp = (GridPane) loader.load();
-		OperateChartController controller = loader.getController();
+		OperateChartController controller = operateChartLoader.getController();
 		mapController = controller;
+		// 画作业大表基本底图
 		controller.setData(timeTableVM);
-		operateTab.setContent(gp);
 
 		// MenuItem mI = new MenuItem("实时报点");
 		// mI.setOnAction(new EventHandler<ActionEvent>() {
@@ -200,7 +234,7 @@ public class MainController implements Initializable {
 		// });
 
 		trainStateView.getColumns().clear();
-		
+
 		TableColumn<List<SimpleStringProperty>, String> col0 = new TableColumn<>("车次");
 		col0.setMinWidth(100);
 		col0.setCellValueFactory(data -> data.getValue().get(0));
@@ -259,7 +293,47 @@ public class MainController implements Initializable {
 		}
 
 		trainStateView.setItems(timeTableVM.fullTaskVMList);
+	}
 
+	private void sendTimeTable() {
+		try {
+			String server0 = ReadFromLocal.getPath(9);
+			String port0 = ReadFromLocal.getPath(10);
+
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					try {
+						ByteArrayOutputStream buffers = new ByteArrayOutputStream();
+						ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(buffers));
+						out.writeObject(timeTableVM.timeTable);
+						out.close();
+
+						DatagramSocket datagramSocket = new DatagramSocket();
+						InetAddress address0 = InetAddress.getByName(server0);
+						byte[] data = buffers.toByteArray();
+						buffers.close();
+						DatagramPacket datagramPacket1 = new DatagramPacket(data, data.length, address0,
+								Integer.parseInt(port0));
+						byte[] head = BigLittleConverter.intToByteArr(data.length);
+						DatagramPacket datagramPacket0 = new DatagramPacket(head, head.length, address0,
+								Integer.parseInt(port0));
+						
+						datagramSocket.send(datagramPacket0);
+						datagramSocket.send(datagramPacket1);
+
+						datagramSocket.close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}).start();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 
 	public void refresh(String oldTrainNum, String oldTime, String newTime, String inOrOut) {
@@ -332,5 +406,11 @@ public class MainController implements Initializable {
 			// 刷新作业大表
 			mapController.refreshMap(timeTableVM);
 		}
+	}
+
+	public void refreshMap(TimeTableVM timeTableVM) {
+		this.timeTableVM = timeTableVM;
+		trainStateView.setItems(timeTableVM.fullTaskVMList);
+		mapController.refreshMap(timeTableVM);
 	}
 }

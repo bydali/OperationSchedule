@@ -25,6 +25,21 @@ public class BigLittleConverter {
 		result[0] = (byte) (c & 0xFF);
 		return result;
 	}
+	
+	public static byte[] intToByteArr(int x){
+		byte[] arr = new byte[4];
+		arr[3]= (byte)(x & 0xff);
+		arr[2]= (byte)(x>>8 & 0xff);
+		arr[1]= (byte)(x>>16 & 0xff);
+		arr[0]= (byte)(x>>24 & 0xff);
+		return arr;
+	}
+	
+	public static int byteArrToInt(byte[] arr){
+		int x = ((arr[0] & 0xff) << 24 )|((arr[1]& 0xff) <<16 )|((arr[2] & 0xff)<<8)|(arr[3] & 0xff);
+		return x;
+	}
+
 
 	public static byte[] concatBytes(byte[]... bytes) {
 		int len = 0;

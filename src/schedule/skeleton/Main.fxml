@@ -73,6 +73,7 @@
 						<MenuItem fx:id="reportTime" mnemonicParsing="false" text="实时报点" />
 						<MenuItem fx:id="trainStateUpdate" mnemonicParsing="false" text="列车运行状态更新" />
                   <MenuItem fx:id="openTrainStates" mnemonicParsing="false" text="打开列车运行图" />
+                  <MenuItem fx:id="syncTimeTable" mnemonicParsing="false" text="同步运行计划" />
 						<MenuItem mnemonicParsing="false" text="当班记事" />
 						<SeparatorMenuItem mnemonicParsing="false" />
 						<MenuItem mnemonicParsing="false" text="乘务管理窗口" />

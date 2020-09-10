@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
-public class TimeTable {
+public class TimeTable implements Serializable{
 
 	// 时间点状态的序列
 	public List<TrainState> allTrainState;

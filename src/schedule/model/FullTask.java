@@ -1,9 +1,10 @@
 package schedule.model;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.List;
 
-public class FullTask {
+public class FullTask implements Serializable{
 	public String trainNum;
 	public List<StationIO> allStationIO;
 

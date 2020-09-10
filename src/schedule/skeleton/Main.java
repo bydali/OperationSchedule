@@ -1,6 +1,12 @@
 package schedule.skeleton;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.SocketException;
 import java.time.LocalDate;
 
 import javafx.application.Application;
@@ -13,6 +19,9 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
+import schedule.io.BigLittleConverter;
+import schedule.io.ReadFromLocal;
+import schedule.model.TimeTable;
 import schedule.station.FoldHeadController;
 import schedule.viewmodel.TimeTableVM;
 import javafx.scene.Cursor;
@@ -48,43 +57,104 @@ public class Main extends Application {
 	private double MIN_WIDTH = 400.00;
 	private double MIN_HEIGHT = 300.00;
 	private double xOffset = 0, yOffset = 0;// 自定义dialog移动横纵坐标
-	
+
 	public static FXMLLoader loader;
+	private TimeTableVM timeTableVM;
+	private boolean timeTableReceiver = true;
+	private DatagramSocket ds;
 
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-		    loader = new FXMLLoader(getClass().getResource("Main.fxml"));
+			loader = new FXMLLoader(getClass().getResource("Main.fxml"));
 			BorderPane root = (BorderPane) loader.load();
 
-			setData(loader.getController());
-
-//			Scene scene = new Scene(setCustomWindow(primaryStage, root), 1680, 1050);
-		    Scene scene = new Scene(root, 1680, 1050);
+			// Scene scene = new Scene(setCustomWindow(primaryStage, root), 1680, 1050);
+			Scene scene = new Scene(root, 1680, 1050);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("车载列车运行图可视化");
-			primaryStage.getIcons().add(new Image(
-	                getClass().getResourceAsStream("app_icon.PNG")));
-			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>(){
-	            public void handle(WindowEvent event) {
-	            	// 关闭所有窗口
-	                Platform.exit();
-	                
-	                // 关闭所有后台线程
-	                closeBackEndTasks();
-	            }
-	        });
+			primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("app_icon.PNG")));
+			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+				public void handle(WindowEvent event) {
+					// 关闭所有窗口
+					Platform.exit();
+
+					// 关闭所有后台线程
+					closeBackEndTasks();
+				}
+			});
 			primaryStage.show();
+
+			setData(loader.getController());
+			initialBackEndTasks();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static void closeBackEndTasks() {
-		UpdateTimeController.timer.cancel();
+	// 运行后台任务
+	private void initialBackEndTasks() {
+		try {
+			String port0 = ReadFromLocal.getPath(10);
+			ds = new DatagramSocket(Integer.valueOf(port0));
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					boolean newHead = false;
+					int newDataLen = 0;
+					while (timeTableReceiver) {
+						try {
+							if (!newHead) {
+								byte[] buf = new byte[4];
+								DatagramPacket dp = new DatagramPacket(buf, buf.length);
+								ds.receive(dp);
+								newDataLen = BigLittleConverter.byteArrToInt(dp.getData());
+								newHead = true;
+							} else {
+								byte[] buf = new byte[newDataLen];
+								DatagramPacket dp = new DatagramPacket(buf, buf.length);
+								ds.receive(dp);
+								ByteArrayInputStream buffers = new ByteArrayInputStream(dp.getData());
+								ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(buffers));
+
+								TimeTable timeTable = (TimeTable) in.readObject();
+
+								Platform.runLater(() -> {
+									try {
+										((MainController) (Main.loader.getController()))
+												.refreshMap(new TimeTableVM(timeTable));
+									} catch (IOException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+								});
+
+								in.close();
+								buffers.close();
+								newHead = false;
+							}
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}
+			}).start();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
-	
+
+	public void closeBackEndTasks() {
+		UpdateTimeController.timer.cancel();
+		timeTableReceiver = false;
+		ds.close();
+	}
+
 	private GridPane setCustomWindow(Stage primaryStage, BorderPane root) {
 		GridPane gpTitle = new GridPane();
 		gpTitle.setAlignment(Pos.CENTER_LEFT);
@@ -261,8 +331,27 @@ public class Main extends Application {
 
 	// 初始化时刻大表
 	private void setData(MainController controller) throws IOException {
-		// 生成时刻表VM
-		TimeTableVM timeTableVM = new TimeTableVM();
+		Thread initialData = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				// 生成时刻表VM
+				try {
+					timeTableVM = new TimeTableVM();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		initialData.start();
+		try {
+			initialData.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		// 主界面控制器设置
 		controller.setData(timeTableVM);
 	}

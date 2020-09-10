@@ -1,5 +1,6 @@
 package schedule.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
@@ -7,7 +8,7 @@ import java.util.List;
 
 import javafx.beans.property.SimpleStringProperty;
 
-public class TrainState {
+public class TrainState implements Serializable{
 
 	public int idx;
 	public String trainNum;

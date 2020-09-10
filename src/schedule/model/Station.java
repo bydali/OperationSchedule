@@ -1,6 +1,8 @@
 package schedule.model;
 
-public class Station {
+import java.io.Serializable;
+
+public class Station implements Serializable{
 
 	private String stationName;
 

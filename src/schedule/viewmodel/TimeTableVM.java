@@ -29,7 +29,13 @@ public class TimeTableVM {
 		// TODO Auto-generated constructor stub
 		generateTimeTableVM("");
 	}
-	
+
+	public TimeTableVM(TimeTable timeTable) throws IOException {
+		// TODO Auto-generated constructor stub
+		this.timeTable = timeTable;
+		generatePart();
+	}
+
 	public TimeTableVM(String trainFile) throws IOException {
 		// TODO Auto-generated constructor stub
 		generateTimeTableVM(trainFile);
@@ -38,11 +44,13 @@ public class TimeTableVM {
 	private void generateTimeTableVM(String trainFile) throws IOException {
 		if (trainFile.equals("")) {
 			timeTable = ReadFromLocal.readTT();
-		}
-		else {
+		} else {
 			timeTable = ReadFromLocal.readTT(trainFile);
 		}
+		generatePart();
+	}
 
+	private void generatePart() {
 		allStationVM = new ArrayList<StationVM>();
 		for (Station station : timeTable.allStation) {
 			allStationVM.add(new StationVM(station));
