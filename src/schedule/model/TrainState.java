@@ -17,6 +17,11 @@ public class TrainState implements Serializable{
 	public String stationName;
 	public String track;
 	public String type;
+	
+	public String rwdh;
+	public String czsm;
+	public String czlb;
+	public String sslj;
 
 	public TrainState(List<Object> props) {
 		idx = Integer.parseInt(props.get(0).toString());
@@ -30,5 +35,10 @@ public class TrainState implements Serializable{
 		stationName = props.get(3).toString();
 		track = props.get(4).toString();
 		type = props.get(5).toString();
+		
+		rwdh=props.get(6).toString();
+		czsm=props.get(7).toString();
+		czlb=props.get(8).toString();
+		sslj=props.get(9).toString();
 	}
 }

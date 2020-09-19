@@ -67,12 +67,8 @@ public class UpdateTimeController implements Initializable {
 
 	public static Timer timer = new Timer();
 
-	private static String server0;
-	private static String port0;
-	private static String server1;
-	private static String port1;
-	private static String server2;
-	private static String port2;
+	private static String server;
+	private static String port;
 
 	private static String armyNumT = "1";
 	private static String routeNumT = "1";
@@ -107,12 +103,8 @@ public class UpdateTimeController implements Initializable {
 		timerUpdate.setSelected(isTimer);
 
 		try {
-			server0 = ReadFromLocal.getPath(3);
-			port0 = ReadFromLocal.getPath(4);
-			server1 = ReadFromLocal.getPath(5);
-			port1 = ReadFromLocal.getPath(6);
-			server2 = ReadFromLocal.getPath(7);
-			port2 = ReadFromLocal.getPath(8);
+			server = ReadFromLocal.getPath(3);
+			port = ReadFromLocal.getPath(4);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -412,19 +404,10 @@ public class UpdateTimeController implements Initializable {
 			}
 			head[33] = jyh;
 
-			InetAddress address0 = InetAddress.getByName(server0);
-			DatagramPacket datagramPacket0 = new DatagramPacket(head, head.length, address0, Integer.parseInt(port0));
-
-			InetAddress address1 = InetAddress.getByName(server1);
-			DatagramPacket datagramPacket1 = new DatagramPacket(head, head.length, address1, Integer.parseInt(port1));
-
-			InetAddress address2 = InetAddress.getByName(server2);
-			DatagramPacket datagramPacket2 = new DatagramPacket(head, head.length, address2, Integer.parseInt(port2));
+			InetAddress address0 = InetAddress.getByName(server);
+			DatagramPacket datagramPacket0 = new DatagramPacket(head, head.length, address0, Integer.parseInt(port));
 
 			datagramSocket.send(datagramPacket0);
-			datagramSocket.send(datagramPacket1);
-			datagramSocket.send(datagramPacket2);
-
 			datagramSocket.close();
 
 			// Platform.runLater(() -> {

@@ -8,6 +8,9 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -21,6 +24,7 @@ import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import schedule.io.BigLittleConverter;
 import schedule.io.ReadFromLocal;
+import schedule.io.Write2Local;
 import schedule.model.TimeTable;
 import schedule.station.FoldHeadController;
 import schedule.viewmodel.TimeTableVM;
@@ -61,7 +65,7 @@ public class Main extends Application {
 	public static FXMLLoader loader;
 	private TimeTableVM timeTableVM;
 	private boolean timeTableReceiver = true;
-	private DatagramSocket ds;
+	private DatagramSocket ds0;
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -77,6 +81,19 @@ public class Main extends Application {
 			primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("app_icon.PNG")));
 			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 				public void handle(WindowEvent event) {
+					new Thread(new Runnable() {
+						@Override
+						public void run() {
+							// TODO Auto-generated method stub
+							try {
+								Write2Local.save2Disk(timeTableVM.timeTable.path, timeTableVM.timeTable);
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					}).start();
+
 					// 关闭所有窗口
 					Platform.exit();
 
@@ -86,9 +103,8 @@ public class Main extends Application {
 			});
 			primaryStage.show();
 
-			setData(loader.getController());
+			initialDataAndUI(loader.getController());
 			initialBackEndTasks();
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -97,44 +113,134 @@ public class Main extends Application {
 	// 运行后台任务
 	private void initialBackEndTasks() {
 		try {
-			String port0 = ReadFromLocal.getPath(10);
-			ds = new DatagramSocket(Integer.valueOf(port0));
+			String port = ReadFromLocal.getPath(5);
+			ds0 = new DatagramSocket(Integer.valueOf(port));
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
 					// TODO Auto-generated method stub
 					boolean newHead = false;
 					int newDataLen = 0;
+					int typeCode = 0;
 					while (timeTableReceiver) {
 						try {
-							if (!newHead) {
+							if (typeCode == 0) {
 								byte[] buf = new byte[4];
-								DatagramPacket dp = new DatagramPacket(buf, buf.length);
-								ds.receive(dp);
-								newDataLen = BigLittleConverter.byteArrToInt(dp.getData());
-								newHead = true;
+								DatagramPacket dp0 = new DatagramPacket(buf, buf.length);
+								ds0.receive(dp0);
+								typeCode = BigLittleConverter.byteArrToInt(dp0.getData());
 							} else {
-								byte[] buf = new byte[newDataLen];
-								DatagramPacket dp = new DatagramPacket(buf, buf.length);
-								ds.receive(dp);
-								ByteArrayInputStream buffers = new ByteArrayInputStream(dp.getData());
-								ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(buffers));
+								// 接收同步时刻表
+								if (typeCode == 1) {
+									if (!newHead) {
+										byte[] buf = new byte[4];
+										DatagramPacket dp = new DatagramPacket(buf, buf.length);
+										ds0.receive(dp);
+										newDataLen = BigLittleConverter.byteArrToInt(dp.getData());
+										newHead = true;
+									} else {
+										Write2Local.save2Disk(timeTableVM.timeTable.path, timeTableVM.timeTable);
 
-								TimeTable timeTable = (TimeTable) in.readObject();
+										byte[] buf = new byte[newDataLen];
+										DatagramPacket dp = new DatagramPacket(buf, buf.length);
+										ds0.receive(dp);
+										ByteArrayInputStream buffers = new ByteArrayInputStream(dp.getData());
+										ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(buffers));
 
-								Platform.runLater(() -> {
-									try {
-										((MainController) (Main.loader.getController()))
-												.refreshMap(new TimeTableVM(timeTable));
-									} catch (IOException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
+										TimeTable timeTable = (TimeTable) in.readObject();
+										timeTable.path = null;
+
+										Platform.runLater(() -> {
+											try {
+												((MainController) (Main.loader.getController()))
+														.refreshMap(new TimeTableVM(timeTable));
+											} catch (IOException e) {
+												// TODO Auto-generated catch block
+												e.printStackTrace();
+											}
+										});
+
+										in.close();
+										buffers.close();
+										newHead = false;
+										typeCode = 0;
 									}
-								});
+								}
 
-								in.close();
-								buffers.close();
-								newHead = false;
+								// 接收时刻表计划
+								if (typeCode == 3) {
+									if (!newHead) {
+										byte[] buf = new byte[4];
+										DatagramPacket dp = new DatagramPacket(buf, buf.length);
+										ds0.receive(dp);
+										newDataLen = BigLittleConverter.byteArrToInt(dp.getData());
+										newHead = true;
+									} else {
+										byte[] buf = new byte[newDataLen];
+										DatagramPacket dp = new DatagramPacket(buf, buf.length);
+										ds0.receive(dp);
+										ByteArrayInputStream buffers = new ByteArrayInputStream(dp.getData());
+										ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(buffers));
+
+										TimeTable timeTable = (TimeTable) in.readObject();
+										DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
+										Write2Local.save2Disk(dtf.format(LocalDateTime.now()) + ".xml", timeTable);
+
+										Platform.runLater(() -> {
+											try {
+												Stage alert = new Stage();
+												FXMLLoader loader = new FXMLLoader(
+														getClass().getResource("AlertScene.fxml"));
+												AnchorPane root;
+												try {
+													root = (AnchorPane) loader.load();
+													Scene scene = new Scene(root);
+													scene.getStylesheets().add(
+															getClass().getResource("application.css").toExternalForm());
+													alert.setScene(scene);
+													alert.setResizable(false);
+													alert.setTitle("收到运行计划");
+													alert.getIcons().add(
+															new Image(getClass().getResourceAsStream("app_icon.PNG")));
+													AlertSceneController controller = loader.getController();
+													controller.setContent("收到时刻表，已保存当前目录！");
+													alert.show();
+												} catch (IOException e) {
+													// TODO Auto-generated catch block
+													e.printStackTrace();
+												}
+											} catch (Exception e) {
+												// TODO Auto-generated catch block
+												e.printStackTrace();
+											}
+										});
+
+										in.close();
+										buffers.close();
+										newHead = false;
+										typeCode = 0;
+									}
+								}
+								// 接收调度命令
+								if (typeCode == 2) {
+									byte[] buf = new byte[1024 * 5];
+									DatagramPacket dp = new DatagramPacket(buf, buf.length);
+									ds0.receive(dp);
+
+									String msg = new String(buf).trim();
+
+									Platform.runLater(() -> {
+										try {
+											((MainController) (Main.loader.getController())).notifyMsg(msg);
+											;
+										} catch (Exception e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+									});
+
+									typeCode = 0;
+								}
 							}
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
@@ -150,9 +256,12 @@ public class Main extends Application {
 	}
 
 	public void closeBackEndTasks() {
+		// 定时发送关闭
 		UpdateTimeController.timer.cancel();
+		// 时刻表接收端口关闭
 		timeTableReceiver = false;
-		ds.close();
+
+		ds0.close();
 	}
 
 	private GridPane setCustomWindow(Stage primaryStage, BorderPane root) {
@@ -330,7 +439,7 @@ public class Main extends Application {
 	}
 
 	// 初始化时刻大表
-	private void setData(MainController controller) throws IOException {
+	private void initialDataAndUI(MainController controller) throws IOException {
 		Thread initialData = new Thread(new Runnable() {
 			@Override
 			public void run() {

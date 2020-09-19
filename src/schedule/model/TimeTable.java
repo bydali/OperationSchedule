@@ -36,7 +36,7 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
-public class TimeTable implements Serializable{
+public class TimeTable implements Serializable {
 
 	// 时间点状态的序列
 	public List<TrainState> allTrainState;
@@ -49,9 +49,13 @@ public class TimeTable implements Serializable{
 
 	public List<Station> allStation;
 
+	public String path;
+
 	// 测试构造函数
 	public TimeTable(String stationPath, String timeTablePath) throws IOException {
 		// TODO Auto-generated constructor stub
+		path = timeTablePath;
+
 		// 生成简单的车站信息
 		readAllStations(stationPath);
 		// 生成列车时间点状态的序列
@@ -84,11 +88,16 @@ public class TimeTable implements Serializable{
 			Element rootElement = document.getRootElement();
 			Iterator iterator = rootElement.elementIterator();
 			String trainNum = "";
+			String rwdh = "";
 			while (iterator.hasNext()) {
 				Element stu = (Element) iterator.next();
 				if (stu.getName().equals("LCCC")) {
 					// 读取车次
 					trainNum = stu.getText();
+				}
+				if (stu.getName().equals("RWDH")) {
+					// 读取车次
+					rwdh = stu.getText();
 				}
 				if (stu.getName().equals("YXZD")) {
 					Iterator iterator1 = stu.elementIterator();
@@ -102,6 +111,10 @@ public class TimeTable implements Serializable{
 							props.add(stuChild.attributeValue("CZMZ"));
 							props.add(stuChild.attributeValue("TLDS"));
 							props.add("发车");
+							props.add(rwdh);
+							props.add(stu.attributeValue("CZSM"));
+							props.add(stuChild.attributeValue("CZLB"));
+							props.add(stuChild.attributeValue("SSLJ"));
 							allTrainState.add(new TrainState(props));
 						}
 						if (stuChild.attributeValue("CZLB").equals("终到站")) {
@@ -109,6 +122,10 @@ public class TimeTable implements Serializable{
 							props.add(stuChild.attributeValue("CZMZ"));
 							props.add(stuChild.attributeValue("TLDS"));
 							props.add("接车");
+							props.add(rwdh);
+							props.add(stu.attributeValue("CZSM"));
+							props.add(stuChild.attributeValue("CZLB"));
+							props.add(stuChild.attributeValue("SSLJ"));
 							allTrainState.add(new TrainState(props));
 						}
 						if (stuChild.attributeValue("CZLB").equals("途径站")) {
@@ -116,9 +133,13 @@ public class TimeTable implements Serializable{
 							props.add(stuChild.attributeValue("CZMZ"));
 							props.add(stuChild.attributeValue("TLDS"));
 							props.add("接车");
+							props.add(rwdh);
+							props.add(stu.attributeValue("CZSM"));
+							props.add(stuChild.attributeValue("CZLB"));
+							props.add(stuChild.attributeValue("SSLJ"));
 							allTrainState.add(new TrainState(props));
-							props.remove(props.size() - 1);
-							props.add("发车");
+							props.remove(5);
+							props.add(5, "发车");
 							props.set(2, stuChild.attributeValue("CZSJ"));
 							allTrainState.add(new TrainState(props));
 						}
@@ -265,7 +286,7 @@ public class TimeTable implements Serializable{
 
 				trainState.time = newT;
 				find = true;
-			} 
+			}
 			// 更新之后的时间点
 			else if (trainState.time != null) {
 				LocalTime new_ = trainState.time.plusSeconds(gapTime);

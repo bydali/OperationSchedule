@@ -3,6 +3,8 @@ package schedule.skeleton;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
@@ -12,11 +14,18 @@ import java.net.URL;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import javax.sound.sampled.Line;
 
+import org.apache.commons.math3.random.ISAACRandom;
 import org.apache.xmlbeans.impl.xb.xsdschema.Public;
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.XMLWriter;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;
@@ -37,6 +46,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
@@ -51,6 +62,8 @@ import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import schedule.io.BigLittleConverter;
 import schedule.io.ReadFromLocal;
+import schedule.io.Write2Local;
+import schedule.io.Write2Port;
 import schedule.model.TimeTable;
 import schedule.model.TrainState;
 import schedule.station.FoldBodyController;
@@ -83,9 +96,16 @@ public class MainController implements Initializable {
 	@FXML
 	private MenuItem syncTimeTable;
 
+	@FXML
+	private MenuItem sendTimeTable;
+
+	@FXML
+	private MenuItem saveTimeTable;
+
 	private TimeTableVM timeTableVM;
 	private OperateChartController mapController;
 	private FXMLLoader operateChartLoader;
+	private FXMLLoader operateCmdLoader;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -106,12 +126,32 @@ public class MainController implements Initializable {
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
 				FileChooser fileChooser = new FileChooser();
-				fileChooser.setTitle("Choose File");
+				fileChooser.setTitle("打开时刻表");
 				fileChooser.getExtensionFilters().add(new ExtensionFilter("XML", "*.xml"));
 				File file = fileChooser.showOpenDialog(sP.getScene().getWindow());
 				if (file != null) {
 					try {
-						setData(new TimeTableVM(file.getAbsolutePath()));
+						Thread initialData = new Thread(new Runnable() {
+							@Override
+							public void run() {
+								// TODO Auto-generated method stub
+								// 生成时刻表VM
+								try {
+									timeTableVM = new TimeTableVM(file.getAbsolutePath());
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							}
+						});
+						initialData.start();
+						try {
+							initialData.join();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						setData(timeTableVM);
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -172,13 +212,75 @@ public class MainController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
+				ArrayList<String> targets = new ArrayList<>();
+				int i = 6;
+				while (true) {
+					try {
+						String device = ReadFromLocal.getPath(i);
+						String port = ReadFromLocal.getPath(i + 1);
+						i += 2;
+						if (device == null || port == null) {
+							break;
+						}
+						targets.add(device + '：' + port);
+					} catch (Exception e) {
+						// TODO: handle exception
+						break;
+					}
+				}
+
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
-						sendTimeTable();
+						for (String string : targets) {
+							Write2Port.sendTimeTable(string.split("：")[0], string.split("：")[1], 1);
+						}
 					}
 				}).start();
+			}
+		});
+		sendTimeTable.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				Stage sendTable = new Stage();
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("SendTimeTable.fxml"));
+				AnchorPane root;
+				try {
+					root = (AnchorPane) loader.load();
+					Scene sendScene = new Scene(root);
+					sendScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+					sendTable.setScene(sendScene);
+					sendTable.setResizable(false);
+					sendTable.setTitle("发送时刻表");
+					sendTable.getIcons().add(new Image(getClass().getResourceAsStream("app_icon.PNG")));
+					sendTable.show();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		saveTimeTable.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				FileChooser fileChooser = new FileChooser();
+				fileChooser.setTitle("保存时刻表");
+				fileChooser.getExtensionFilters().add(new ExtensionFilter("XML", "*.xml"));
+				File file = fileChooser.showSaveDialog(sP.getScene().getWindow());
+				if (file != null) {
+					try {
+						if (file.exists()) {
+							file.delete();
+						}
+						Write2Local.save2Disk(file.getAbsolutePath(), timeTableVM.timeTable);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 			}
 		});
 	}
@@ -295,47 +397,6 @@ public class MainController implements Initializable {
 		trainStateView.setItems(timeTableVM.fullTaskVMList);
 	}
 
-	private void sendTimeTable() {
-		try {
-			String server0 = ReadFromLocal.getPath(9);
-			String port0 = ReadFromLocal.getPath(10);
-
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-					// TODO Auto-generated method stub
-					try {
-						ByteArrayOutputStream buffers = new ByteArrayOutputStream();
-						ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(buffers));
-						out.writeObject(timeTableVM.timeTable);
-						out.close();
-
-						DatagramSocket datagramSocket = new DatagramSocket();
-						InetAddress address0 = InetAddress.getByName(server0);
-						byte[] data = buffers.toByteArray();
-						buffers.close();
-						DatagramPacket datagramPacket1 = new DatagramPacket(data, data.length, address0,
-								Integer.parseInt(port0));
-						byte[] head = BigLittleConverter.intToByteArr(data.length);
-						DatagramPacket datagramPacket0 = new DatagramPacket(head, head.length, address0,
-								Integer.parseInt(port0));
-						
-						datagramSocket.send(datagramPacket0);
-						datagramSocket.send(datagramPacket1);
-
-						datagramSocket.close();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			}).start();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-	}
-
 	public void refresh(String oldTrainNum, String oldTime, String newTime, String inOrOut) {
 		if (!oldTime.equals(newTime)) {
 			for (List<SimpleStringProperty> props : timeTableVM.fullTaskVMList) {
@@ -405,6 +466,7 @@ public class MainController implements Initializable {
 			timeTableVM.updateTrainState(oldTrainNum, oldTime, newTime, inOrOut);
 			// 刷新作业大表
 			mapController.refreshMap(timeTableVM);
+
 		}
 	}
 
@@ -412,5 +474,32 @@ public class MainController implements Initializable {
 		this.timeTableVM = timeTableVM;
 		trainStateView.setItems(timeTableVM.fullTaskVMList);
 		mapController.refreshMap(timeTableVM);
+	}
+
+	public void notifyMsg(String msg) {
+		if (operateCmdLoader != null) {
+			((NotifyController) operateCmdLoader.getController()).notifyMsg(msg);
+			Stage stage = (Stage) ((BorderPane) operateCmdLoader.getRoot()).getScene().getWindow();
+			stage.show();
+		} else {
+			Stage updateTimeTable = new Stage();
+			operateCmdLoader = new FXMLLoader(getClass().getResource("Notify.fxml"));
+			BorderPane root;
+			try {
+				root = (BorderPane) operateCmdLoader.load();
+				Scene newMsgScene = new Scene(root, 1200, 700);
+				newMsgScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+				updateTimeTable.setScene(newMsgScene);
+				// updateTimeTable.setResizable(false);
+				updateTimeTable.setTitle("收到调度命令！");
+				updateTimeTable.getIcons().add(new Image(getClass().getResourceAsStream("app_icon.PNG")));
+				NotifyController notifyController = operateCmdLoader.getController();
+				notifyController.notifyMsg(msg);
+				updateTimeTable.show();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="schedule.skeleton.AlertSceneController">
+	<children>
+		<Text fx:id="content" fill="WHITE" layoutX="-1.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="收到时刻表，已保存当前目录！" textAlignment="CENTER" wrappingWidth="499.3603515625" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="30.0">
+			<font>
+				<Font size="30.0" />
+			</font>
+		</Text>
+	</children>
+</AnchorPane>

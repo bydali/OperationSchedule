@@ -112,12 +112,8 @@ public class ReportTimeController implements Initializable {
 				// TODO Auto-generated method stub
 				try {
 					if (FormatChecker.checkTimeFormat(reportTime.getText())) {
-						String server0 = ReadFromLocal.getPath(3);
-						String port0 = ReadFromLocal.getPath(4);
-						String server1 = ReadFromLocal.getPath(5);
-						String port1 = ReadFromLocal.getPath(6);
-						String server2 = ReadFromLocal.getPath(7);
-						String port2 = ReadFromLocal.getPath(8);
+						String server = ReadFromLocal.getPath(3);
+						String port = ReadFromLocal.getPath(4);
 
 						new Thread(new Runnable() {
 							@Override
@@ -202,21 +198,11 @@ public class ReportTimeController implements Initializable {
 									}
 									head[33] = jyh;
 
-									InetAddress address0 = InetAddress.getByName(server0);
+									InetAddress address0 = InetAddress.getByName(server);
 									DatagramPacket datagramPacket0 = new DatagramPacket(head, head.length, address0,
-											Integer.parseInt(port0));
-
-									InetAddress address1 = InetAddress.getByName(server1);
-									DatagramPacket datagramPacket1 = new DatagramPacket(head, head.length, address1,
-											Integer.parseInt(port1));
-
-									InetAddress address2 = InetAddress.getByName(server2);
-									DatagramPacket datagramPacket2 = new DatagramPacket(head, head.length, address2,
-											Integer.parseInt(port2));
+											Integer.parseInt(port));
 
 									datagramSocket.send(datagramPacket0);
-									datagramSocket.send(datagramPacket1);
-									datagramSocket.send(datagramPacket2);
 
 									datagramSocket.close();
 

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="114.0" prefWidth="403.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="schedule.skeleton.SendTimeTableController">
+	<children>
+		<ComboBox fx:id="cb" layoutX="33.0" layoutY="39.0" prefHeight="36.0" prefWidth="215.0" />
+		<Button fx:id="btn" layoutX="278.0" layoutY="39.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="98.0" text="发送" />
+	</children>
+	<opaqueInsets>
+		<Insets />
+	</opaqueInsets>
+</AnchorPane>
