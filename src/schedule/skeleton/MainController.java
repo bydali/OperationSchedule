@@ -37,6 +37,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SplitPane;
@@ -48,6 +49,7 @@ import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
@@ -101,6 +103,9 @@ public class MainController implements Initializable {
 
 	@FXML
 	private MenuItem saveTimeTable;
+	
+	@FXML
+	private Button recTaskBtn;
 
 	private TimeTableVM timeTableVM;
 	private OperateChartController mapController;
@@ -128,6 +133,7 @@ public class MainController implements Initializable {
 				FileChooser fileChooser = new FileChooser();
 				fileChooser.setTitle("打开时刻表");
 				fileChooser.getExtensionFilters().add(new ExtensionFilter("XML", "*.xml"));
+				fileChooser.setInitialDirectory(new File("."));
 				File file = fileChooser.showOpenDialog(sP.getScene().getWindow());
 				if (file != null) {
 					try {
@@ -268,6 +274,7 @@ public class MainController implements Initializable {
 				// TODO Auto-generated method stub
 				FileChooser fileChooser = new FileChooser();
 				fileChooser.setTitle("保存时刻表");
+				fileChooser.setInitialDirectory(new File("."));
 				fileChooser.getExtensionFilters().add(new ExtensionFilter("XML", "*.xml"));
 				File file = fileChooser.showSaveDialog(sP.getScene().getWindow());
 				if (file != null) {
@@ -283,11 +290,37 @@ public class MainController implements Initializable {
 				}
 			}
 		});
+		recTaskBtn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				Stage alert = new Stage();
+				FXMLLoader loader = new FXMLLoader(
+						getClass().getResource("FakeWin.fxml"));
+				AnchorPane root;
+				try {
+					root = (AnchorPane) loader.load();
+					Scene scene = new Scene(root);
+					scene.getStylesheets().add(
+							getClass().getResource("application.css").toExternalForm());
+					alert.setScene(scene);
+					alert.setResizable(false);
+					alert.getIcons().add(
+							new Image(getClass().getResourceAsStream("app_icon.PNG")));
+					FakeWinController controller = loader.getController();
+					alert.show();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 	public void setData(TimeTableVM timeTableVM) throws IOException {
 		this.timeTableVM = timeTableVM;
-
+		trainStateView.setTooltip(new Tooltip(timeTableVM.timeTable.allTrainState.get(0).date.toString()));
+		
 		OperateChartController controller = operateChartLoader.getController();
 		mapController = controller;
 		// 画作业大表基本底图

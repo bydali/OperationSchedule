@@ -20,10 +20,14 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import schedule.io.BigLittleConverter;
 import schedule.io.FormatChecker;
@@ -247,6 +251,51 @@ public class UpdateTimeController implements Initializable {
 		timerUpdate.selectedProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				if (newValue) {
+					Stage alert = new Stage();
+					FXMLLoader loader = new FXMLLoader(
+							getClass().getResource("AlertScene.fxml"));
+					AnchorPane root;
+					try {
+						root = (AnchorPane) loader.load();
+						Scene scene = new Scene(root);
+						scene.getStylesheets().add(
+								getClass().getResource("application.css").toExternalForm());
+						alert.setScene(scene);
+						alert.setResizable(false);
+						alert.getIcons().add(
+								new Image(getClass().getResourceAsStream("app_icon.PNG")));
+						AlertSceneController controller = loader.getController();
+						controller.setContent("已开启自动实时报点！");
+						alert.show();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				else {
+					Stage alert = new Stage();
+					FXMLLoader loader = new FXMLLoader(
+							getClass().getResource("AlertScene.fxml"));
+					AnchorPane root;
+					try {
+						root = (AnchorPane) loader.load();
+						Scene scene = new Scene(root);
+						scene.getStylesheets().add(
+								getClass().getResource("application.css").toExternalForm());
+						alert.setScene(scene);
+						alert.setResizable(false);
+						alert.getIcons().add(
+								new Image(getClass().getResourceAsStream("app_icon.PNG")));
+						AlertSceneController controller = loader.getController();
+						controller.setContent("已关闭自动实时报点！");
+						alert.show();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				
 				// TODO Auto-generated method stub
 				armyNumT = armyNum.getText();
 				routeNumT = routeNum.getText();

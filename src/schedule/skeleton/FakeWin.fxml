@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="schedule.skeleton.FakeWinController">
+	<children>
+		<Button fx:id="btn" layoutX="242.0" layoutY="32.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="121.0" text="确定" AnchorPane.rightAnchor="20.0" />
+		<Text fill="WHITE" layoutX="-54.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="接受到列车运行任务！" textAlignment="CENTER" wrappingWidth="499.3603515625" AnchorPane.bottomAnchor="29.46875" AnchorPane.leftAnchor="-54.0" AnchorPane.rightAnchor="63.0" AnchorPane.topAnchor="30.53125">
+			<font>
+				<Font size="30.0" />
+			</font>
+		</Text>
+	</children>
+</AnchorPane>

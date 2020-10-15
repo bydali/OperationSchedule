@@ -29,6 +29,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import schedule.io.BigLittleConverter;
 import schedule.io.FormatChecker;
@@ -221,6 +223,27 @@ public class ReportTimeController implements Initializable {
 								}
 							}
 						}).start();
+						
+						Stage alert = new Stage();
+						FXMLLoader loader = new FXMLLoader(
+								getClass().getResource("AlertScene.fxml"));
+						AnchorPane root;
+						try {
+							root = (AnchorPane) loader.load();
+							Scene scene = new Scene(root);
+							scene.getStylesheets().add(
+									getClass().getResource("application.css").toExternalForm());
+							alert.setScene(scene);
+							alert.setResizable(false);
+							alert.getIcons().add(
+									new Image(getClass().getResourceAsStream("app_icon.PNG")));
+							AlertSceneController controller = loader.getController();
+							controller.setContent("已报告列车实时位置！");
+							alert.show();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 					else {
 						System.out.print("报点时间有误");

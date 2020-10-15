@@ -24,6 +24,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Stage;
 import schedule.io.BigLittleConverter;
 import schedule.io.ReadFromLocal;
 import schedule.io.Write2Port;
@@ -68,6 +69,7 @@ public class SendTimeTableController implements Initializable {
 
 				FileChooser fileChooser = new FileChooser();
 				fileChooser.setTitle("选择时刻表计划");
+				fileChooser.setInitialDirectory(new File("."));
 				fileChooser.getExtensionFilters().add(new ExtensionFilter("XML", "*.xml"));
 				File file = fileChooser.showOpenDialog(btn.getScene().getWindow());
 
@@ -88,6 +90,7 @@ public class SendTimeTableController implements Initializable {
 							}
 						});
 						initialData.start();
+						((Stage)btn.getScene().getWindow()).close();
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

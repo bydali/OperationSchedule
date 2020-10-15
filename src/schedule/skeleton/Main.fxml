@@ -149,17 +149,18 @@
 			<children>
 				<HBox alignment="CENTER_LEFT" prefHeight="90.0" prefWidth="639.0">
 					<children>
-						<Label centerShape="true" text="广铁调度" />
-						<Separator orientation="VERTICAL" prefHeight="200.0" />
-						<Label text="14:30" />
-						<Separator orientation="VERTICAL" prefHeight="200.0" />
-						<Label text="G101" />
-						<Separator orientation="VERTICAL" prefHeight="200.0" />
-						<Label alignment="CENTER" text="G101" />
+						<Label centerShape="true" text="广铁调度" visible="false" />
+						<Separator orientation="VERTICAL" prefHeight="200.0" visible="false" />
+						<Label text="14:30" visible="false" />
+						<Separator orientation="VERTICAL" prefHeight="200.0" visible="false" />
+						<Label text="G101" visible="false" />
+						<Separator orientation="VERTICAL" prefHeight="200.0" visible="false" />
+						<Label alignment="CENTER" text="G101" visible="false" />
 					</children>
 				</HBox>
 				<HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
 					<children>
+                  <Button fx:id="recTaskBtn" mnemonicParsing="false" text="接收任务" />
 						<Button mnemonicParsing="false" text="放大" />
 						<Button mnemonicParsing="false" text="缩小" />
 					</children>
